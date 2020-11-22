@@ -6,8 +6,8 @@ DROP TABLE IF EXISTS supplier;
 CREATE TABLE supplier
 	(
     Supplier_id int NOT NULL,
-    Supplier_name VARCHAR(20) NOT NULL,
-    Address VARCHAR(20),
+    Supplier_name VARCHAR(50) NOT NULL,
+    Address VARCHAR(50),
     Sales_contact VARCHAR(15), 
     Supplier_type VARCHAR(15),
     Import_tax float,
@@ -18,7 +18,7 @@ DROP TABLE IF EXISTS item;
 CREATE TABLE item
 	(
     Item_id int NOT NULL,
-    Item_name VARCHAR(20) NOT NULL,
+    Item_name VARCHAR(30) NOT NULL,
     Quantity int,
     Price float, 
     Item_type VARCHAR(15),
@@ -35,9 +35,9 @@ CREATE TABLE customer
     Phone_no VARCHAR(20),
     FirstName VARCHAR(15),
     LastName VARCHAR(15),
-    Address VARCHAR(20), 
+    Address VARCHAR(50), 
     Postal_code VARCHAR(6),
-    Customer_type VARCHAR(15),
+    Customer_type CHAR(1),
     PRIMARY KEY (Customer_id)
     );
     
