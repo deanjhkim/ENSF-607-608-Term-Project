@@ -1,12 +1,16 @@
 package sharedModel;
 
-public class LocalSupplier extends Supplier {
+import java.io.Serializable;
 
-	private String supplierType;
+public class LocalSupplier extends Supplier implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public LocalSupplier(int id, String name, String address, String contact, String supplierType) {
-		super(id, name, address, contact);
-		this.supplierType = supplierType;
+		super(id, name, address, contact, supplierType);
 	}
 
 	/**
@@ -17,7 +21,6 @@ public class LocalSupplier extends Supplier {
 	 */
 	public String toString() {
 		String s = super.toString();
-		s = s + "Supplier Type: %s \n";
-		return String.format(s, this.supplierType);
+		return s;
 	}
 }

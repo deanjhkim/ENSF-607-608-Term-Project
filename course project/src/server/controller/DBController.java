@@ -124,4 +124,19 @@ public class DBController implements JDBCConnectionInfo {
 		}
 		return suppliers;
 	}
+	
+	public void deleteItem(int itemId) {
+		
+	}
+	
+	public void insertItem(Item itemId) {
+		
+	}
+	
+	public void decreaseItem(int itemId) {
+		
+	}
+	
+
+	
 }

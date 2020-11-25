@@ -1,12 +1,15 @@
 package sharedModel;
 
-public class NonElectricItem extends Item {
+import java.io.Serializable;
 
-	private String itemType;
+public class NonElectricItem extends Item implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public NonElectricItem(int id, String desc, int qty, double price, int supId, String itemType) {
-		super(id, desc, qty, price, supId);
-		this.itemType = itemType;
+		super(id, desc, qty, price, supId, itemType);
 	}
 
 	/**
@@ -14,7 +17,6 @@ public class NonElectricItem extends Item {
 	 */
 	public String toString() {
 		String s = super.toString();
-		s = s + "Item Type: %s";
-		return String.format(s, this.itemType);
+		return s;
 	}
 }

@@ -79,9 +79,13 @@ public class Inventory {
 
 		while (listIterator.hasNext()) {
 			Item temp = listIterator.next();
-			int supId = temp.getSupplierId();
-			temp.setSupplier(sup.findSupplier(supId));
+			setSupplier(sup, temp);
 		}
+	}
+	
+	public void setSupplier(Suppliers sup, Item item) {
+		int supId = item.getSupplierId();
+		item.setSupplier(sup.findSupplier(supId));
 	}
 
 	/**
@@ -126,6 +130,20 @@ public class Inventory {
 			System.out.print("Sufficient quantity in stock\n");
 		}
 	}
+	
+	public void addItem(Suppliers sup, Item item) {
+		items.add(item);
+		setSupplier(sup, item);
+		
+	}
+	
+	public void removeItem(String name) {
+		for(int i = 0; i < items.size(); i++) {
+			if(items.get(i).getDescription().equals(name)) {
+				items.remove(i);
+			}
+		}
+	}
 
 	/**
 	 * Creates order for given item.
@@ -140,5 +158,9 @@ public class Inventory {
 
 	public Order getOrder() {
 		return this.order;
+	}
+	
+	public LinkedList<Item> getItems() {
+		return this.items;
 	}
 }

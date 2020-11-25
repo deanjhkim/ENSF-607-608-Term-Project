@@ -1,6 +1,8 @@
 package server.model;
 
-import sharedModel.Item;
+import java.util.LinkedList;
+
+import sharedModel.*;
 
 public class Shop {
 	
@@ -15,42 +17,21 @@ public class Shop {
 	 * @param inv items list of inventory
 	 * @param sup supplier list of suppliers
 	 */
-	public Shop(Inventory inv, Suppliers sup) {
+	public Shop(Inventory inv, Suppliers sup, Customers customers) {
 		this.inventory = inv;
 		this.suppliers = sup;
+		this.customers = customers;
 		inventory.setSuppliers(suppliers);
 	}
 	
-	/**
-	 * Prints all items in inventory to console.
-	 */
-	public void listItems() {
-		System.out.println(inventory.toString());
+	
+	
+	public Suppliers getSuppliers() {
+		return suppliers;
 	}
 	
-	/**
-	 * Prints all suppliers to console.
-	 */
-	public void listSuppliers() {
-		System.out.println(suppliers.toString());
-	}
-	
-	/**
-	 * Returns item with given ID.
-	 * @param id the item ID number.
-	 * @return
-	 */
-	public Item findItem(int id) {
-		return inventory.findItem(id);
-	}
-	
-	/**
-	 * Returns item with given name;
-	 * @param description items name.
-	 * @return
-	 */
-	public Item findItem(String description) {
-		return inventory.findItem(description);
+	public Customers getCustomers() {
+		return customers;
 	}
 	
 	/**
@@ -61,3 +42,4 @@ public class Shop {
 		return this.inventory;
 	}
 }
+	
