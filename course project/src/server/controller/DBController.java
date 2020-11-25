@@ -33,22 +33,15 @@ public class DBController implements JDBCConnectionInfo {
 		try {
 			statement = jdbc_connection.createStatement();
 			results = statement.executeQuery(sql);
-			while(results.next()) {
-				if(results.getString("Item_type").equals("Electrical")) {
-					Item temp = new ElectricItem(results.getInt("Item_id"),
-							results.getString("Item_name"),
-							results.getInt("Quantity"),
-							results.getDouble("Price"),
-							results.getInt("Supplier_id"),
-							results.getString("Item_type"),
-							results.getString("Power_type"));
+			while (results.next()) {
+				if (results.getString("Item_type").equals("Electrical")) {
+					Item temp = new ElectricItem(results.getInt("Item_id"), results.getString("Item_name"),
+							results.getInt("Quantity"), results.getDouble("Price"), results.getInt("Supplier_id"),
+							results.getString("Item_type"), results.getString("Power_type"));
 					items.add(temp);
 				} else {
-					Item temp = new NonElectricItem(results.getInt("Item_id"),
-							results.getString("Item_name"),
-							results.getInt("Quantity"),
-							results.getDouble("Price"),
-							results.getInt("Supplier_id"),
+					Item temp = new NonElectricItem(results.getInt("Item_id"), results.getString("Item_name"),
+							results.getInt("Quantity"), results.getDouble("Price"), results.getInt("Supplier_id"),
 							results.getString("Item_type"));
 					items.add(temp);
 				}
@@ -58,7 +51,7 @@ public class DBController implements JDBCConnectionInfo {
 		}
 		return items;
 	}
-	
+
 	public LinkedList<Supplier> getSuppliers() {
 		LinkedList<Supplier> suppliers = new LinkedList<Supplier>();
 		String sql = "SELECT * FROM " + SUPPLIERTABLE;
@@ -66,20 +59,16 @@ public class DBController implements JDBCConnectionInfo {
 		try {
 			statement = jdbc_connection.createStatement();
 			results = statement.executeQuery(sql);
-			while(results.next()) {
-				if(results.getString("Supplier_type").equals("International")) {
+			while (results.next()) {
+				if (results.getString("Supplier_type").equals("International")) {
 					Supplier temp = new InternationalSupplier(results.getInt("Supplier_id"),
-							results.getString("Supplier_name"),
-							results.getString("Address"),
-							results.getString("Sales_contact"),
-							results.getString("Supplier_type"),
+							results.getString("Supplier_name"), results.getString("Address"),
+							results.getString("Sales_contact"), results.getString("Supplier_type"),
 							results.getDouble("Import_tax"));
 					suppliers.add(temp);
 				} else {
-					Supplier temp = new LocalSupplier(results.getInt("Supplier_id"),
-							results.getString("Supplier_name"),
-							results.getString("Address"),
-							results.getString("Sales_contact"),
+					Supplier temp = new LocalSupplier(results.getInt("Supplier_id"), results.getString("Supplier_name"),
+							results.getString("Address"), results.getString("Sales_contact"),
 							results.getString("Supplier_type"));
 					suppliers.add(temp);
 				}
@@ -89,7 +78,7 @@ public class DBController implements JDBCConnectionInfo {
 		}
 		return suppliers;
 	}
-	
+
 	public LinkedList<Customer> getCustomers() {
 		LinkedList<Customer> suppliers = new LinkedList<Customer>();
 		String sql = "SELECT * FROM " + CUSTOMERTABLE;
@@ -97,25 +86,17 @@ public class DBController implements JDBCConnectionInfo {
 		try {
 			statement = jdbc_connection.createStatement();
 			results = statement.executeQuery(sql);
-			while(results.next()) {
-				if(results.getString("Customer_type").equals("R")) {
+			while (results.next()) {
+				if (results.getString("Customer_type").equals("R")) {
 					Customer temp = new ResidentialCustomer(results.getInt("Customer_id"),
-							results.getString("Phone_no"),
-							results.getString("FirstName"),
-							results.getString("LastName"),
-							results.getString("Address"),
-							results.getString("Postal_code"),
-							results.getString("Customer_type"));
+							results.getString("Phone_no"), results.getString("FirstName"),
+							results.getString("LastName"), results.getString("Address"),
+							results.getString("Postal_code"), results.getString("Customer_type"));
 					suppliers.add(temp);
 				} else {
-					Customer temp = new CommercialCustomer(results.getInt("Customer_id"),
-							results.getString("Phone_no"),
-							results.getString("FirstName"),
-							results.getString("LastName"),
-							results.getString("Address"),
-							results.getString("Postal_code"),
-							results.getString("Customer_type"));
-					suppliers.add(temp);
+					Customer temp = new CommercialCustomer(results.getInt("Customer_id"), results.getString("Phone_no"),
+							results.getString("FirstName"), results.getString("LastName"), results.getString("Address"),
+							results.getString("Postal_code"), results.getString("Customer_type"));
 					suppliers.add(temp);
 				}
 			}
@@ -124,19 +105,63 @@ public class DBController implements JDBCConnectionInfo {
 		}
 		return suppliers;
 	}
-	
-	public void deleteItem(int itemId) {
-		
-	}
-	
-	public void insertItem(Item itemId) {
-		
-	}
-	
-	public void decreaseItem(int itemId) {
-		
-	}
-	
 
-	
+	public void decreaseItem(String name) {
+		String sql = "UPDATE " + ITEMTABLE + " SET Quantity = Quantity - 1 WHERE Item_name = ?";
+		try {
+			PreparedStatement ps = jdbc_connection.prepareStatement(sql);
+			ps.setString(1, name);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void addCustomer(Customer customer) {
+		String sql = "INSERT INTO " + CUSTOMERTABLE
+				+ " (Customer_id, Phone_no, FirstName, LastName, Address, Postal_code, Customer_type) VALUES (?, ?, ?, ?, ?, ?, ?)";
+		try {
+			PreparedStatement ps = jdbc_connection.prepareStatement(sql);
+			ps.setInt(1, customer.getId());
+			ps.setString(2, customer.getPhoneNumber());
+			ps.setString(3, customer.getfName());
+			ps.setString(4, customer.getlName());
+			ps.setString(5, customer.getAddress());
+			ps.setString(6, customer.getPostalCode());
+			ps.setString(7, customer.getCustomerType());
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void removeCustomer(int id) {
+		String sql = "DELETE FROM " + CUSTOMERTABLE + " WHERE Customer_id = ?";
+		try {
+			PreparedStatement ps = jdbc_connection.prepareStatement(sql);
+			ps.setInt(1, id);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void modifyCustomer(Customer customer) {
+		String sql = "UPDATE " + CUSTOMERTABLE
+				+ " SET Phone_no=?, FirstName=?, LastName=?, Address=?, Postal_code=?, Customer_type=? WHERE Customer_id =?";
+		try {
+			PreparedStatement ps = jdbc_connection.prepareStatement(sql);
+			ps.setInt(7, customer.getId());
+			ps.setString(1, customer.getPhoneNumber());
+			ps.setString(2, customer.getfName());
+			ps.setString(3, customer.getlName());
+			ps.setString(4, customer.getAddress());
+			ps.setString(5, customer.getPostalCode());
+			ps.setString(6, customer.getCustomerType());
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 }
