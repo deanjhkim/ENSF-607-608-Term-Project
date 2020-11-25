@@ -1,13 +1,17 @@
 package sharedModel;
 
-public class ElectricItem extends Item {
+import java.io.Serializable;
 
-	private String itemType;
+public class ElectricItem extends Item implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String powerType;
 
 	public ElectricItem(int id, String desc, int qty, double price, int supId, String itemType, String powerType) {
-		super(id, desc, qty, price, supId);
-		this.itemType = itemType;
+		super(id, desc, qty, price, supId, itemType);
 		this.powerType = powerType;
 	}
 
@@ -16,8 +20,8 @@ public class ElectricItem extends Item {
 	 */
 	public String toString() {
 		String s = super.toString();
-		s = s + "Item Type: %s \nPower Type: %s \n";
-		return String.format(s, this.itemType, this.powerType);
+		s = s + "Power Type: %s \n";
+		return String.format(s, this.powerType);
 	}
 
 }

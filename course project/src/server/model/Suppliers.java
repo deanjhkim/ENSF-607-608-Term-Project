@@ -54,4 +54,8 @@ public class Suppliers {
 
 		return s;
 	}
+	
+	public LinkedList<Supplier> getSuppliers() {
+		return this.suppliers;
+	}
 }
