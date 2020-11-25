@@ -1,5 +1,7 @@
 package sharedModel;
 
+import java.io.Serializable;
+
 /**
  * Contains data fields an methods for tracking item in inventory of shop and
  * its supplier.
@@ -7,7 +9,12 @@ package sharedModel;
  * @author Evan Boerchers
  *
  */
-public class Item {
+public class Item implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private int id;
 
@@ -20,6 +27,8 @@ public class Item {
 	private int supplierId;
 
 	private Supplier supplier;
+	
+	private String itemType;
 
 	/**
 	 * Constructs Item object and fills fields.
@@ -29,12 +38,13 @@ public class Item {
 	 * @param price item price.
 	 * @param supId items supplier ID.
 	 */
-	public Item(int id, String desc, int qty, double price, int supId) {
+	public Item(int id, String desc, int qty, double price, int supId, String itemType) {
 		this.id = id;
 		this.description = desc;
 		this.qty = qty;
 		this.price = price;
 		this.supplierId = supId;
+		this.setItemType(itemType);
 	}
 
 	/**
@@ -43,9 +53,9 @@ public class Item {
 	 */
 	public String toString() {
 		String s = "Item ID: %d \nItem Description: %s \nItem Quantity: %d \n"
-				+ "Item Price: %.2f \nItem SupplierID: %d\n";
+				+ "Item Price: %.2f \nItem SupplierID: %d\nItem Type: %s\n";
 
-		return String.format(s, this.id, this.description, this.qty, this.price, this.supplierId);
+		return String.format(s, this.id, this.description, this.qty, this.price, this.supplierId, this.itemType);
 	}
 	
 	/**
@@ -82,6 +92,14 @@ public class Item {
 
 	public void setSupplier(Supplier supplier) {
 		this.supplier = supplier;
+	}
+
+	public String getItemType() {
+		return itemType;
+	}
+
+	public void setItemType(String itemType) {
+		this.itemType = itemType;
 	}
 
 }
