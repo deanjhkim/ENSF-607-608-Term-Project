@@ -1,10 +1,10 @@
 package server.model;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Random;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 import sharedModel.Item;
 import sharedModel.OrderText;
@@ -28,9 +28,15 @@ public class Order {
 	 * Creates Order object setting date and generating ID number.
 	 */
 	public Order() {
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-		this.date = dtf.format(LocalDate.now());
+		Date dt = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		this.date = sdf.format(dt);
 		this.id = generateId();
+	}
+	
+	public Order(int id, String date) {
+		this.id = id;
+		this.date = date;
 	}
 
 	/** 
@@ -63,21 +69,21 @@ public class Order {
 	 * Creates order line for given item.
 	 * @param item item to order.
 	 */
-	public void generateOrderLine(Item item) {
+	public int generateOrderLine(Item item, int code) {
 		
 		if(orderLines == null) {
 			orderLines = new LinkedList<OrderLine>();
 		}
 		
-		OrderLine existing = checkOrderLine(item);
+		OrderLine existing = findOrderLine(item);
 
 		if (existing == null) {
-			System.out.println("No order line exists for this item...\n");
 			orderLines.add(new OrderLine(item));
 		} else {
-			System.out.println("Order line exists for this item...\n");
 			existing.updateOrderQty();
+			code = 3;
 		}
+		return code;
 	}
 
 	/**
@@ -85,7 +91,7 @@ public class Order {
 	 * @param item the item to order.
 	 * @return
 	 */
-	public OrderLine checkOrderLine(Item item) {
+	public OrderLine findOrderLine(Item item) {
 
 		if (orderLines != null) {
 			ListIterator<OrderLine> listIterator = orderLines.listIterator();
@@ -98,6 +104,37 @@ public class Order {
 			}
 		}
 		return null;
+	}
+	
+	public OrderLine findOrderLine(String name) {
+
+		if (orderLines != null) {
+			ListIterator<OrderLine> listIterator = orderLines.listIterator();
+
+			while (listIterator.hasNext()) {
+				OrderLine temp = listIterator.next();
+				if (temp.getItem().getDescription().equals(name)) {
+					return temp;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public OrderLine getLastOrderLine() {
+		return orderLines.getLast();
+	}
+	
+	public String getDate() {
+		return this.date;
+	}
+	
+	public int getId() {
+		return this.id;
+	}
+	
+	public void setOrderLines(LinkedList<OrderLine> orderLines) {
+		this.orderLines = orderLines;
 	}
 	
 	public void generateOrderText() {

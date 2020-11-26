@@ -80,6 +80,7 @@ public class ServerController {
 		// Setting object aggregation
 		serv.setShop(shop);
 		serv.setDBC(dbc);
+		shop.getInventory().setOrder(dbc.getTodaysOrder(shop.getInventory()));
 		
 		serv.runServer();
 	
