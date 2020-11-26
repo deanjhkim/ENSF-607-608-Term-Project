@@ -56,6 +56,11 @@ public class ModelController implements Runnable {
 			e.printStackTrace();
 		}
 	}
+	
+	public synchronized void decreaseItem(String name) {
+		shop.getInventory().decreaseItem(name);
+		dbc.decreaseItem(name);
+	}
 
 	public void sendCustomerList(LinkedList<Customer> list) {
 		try {
@@ -71,10 +76,21 @@ public class ModelController implements Runnable {
 			e.printStackTrace();
 		}
 	}
+	
+	public void removeCustomer(int id) {
+		shop.getCustomers().removeCustomer(id);
+		dbc.removeCustomer(id);
+	}
+	
+	public void addCustomer(Customer customer) {
+		shop.getCustomers().addCustomer(customer);
+		dbc.addCustomer(customer);
+	}
 
-	public void modifyCustomer(Customer customer) {
+	public synchronized void modifyCustomer(Customer customer) {
 		shop.getCustomers().modifyCustomer(customer.getId(), customer.getPhoneNumber(), customer.getfName(),
 				customer.getlName(), customer.getAddress(), customer.getPostalCode(), customer.getCustomerType());
+		dbc.modifyCustomer(customer);
 	}
 
 	@Override
@@ -88,7 +104,6 @@ public class ModelController implements Runnable {
 				// reading request for operation
 				request = (Message) objectIn.readObject();
 				request.getServerCode();
-				System.out.println(request.getMessage());
 				int code = request.getServerCode();
 
 				switch (code) {
@@ -110,7 +125,7 @@ public class ModelController implements Runnable {
 					break;
 
 				case 5: // decreases item quantity based on name
-					shop.getInventory().decreaseItem(request.getMessage());
+					decreaseItem(request.getMessage());	
 					break;
 
 				case 6: // add item to inventory
@@ -134,7 +149,7 @@ public class ModelController implements Runnable {
 					break;
 
 				case 11: // sends customers list with given type
-					sendCustomerList(shop.getCustomers().getCustomersByLName(request.getMessage()));
+					sendCustomerList(shop.getCustomers().getCustomersByType(request.getMessage()));
 					break;
 
 				case 12: // modify customer with given id
@@ -142,11 +157,11 @@ public class ModelController implements Runnable {
 					break;
 
 				case 13: // Remove customer with given id
-					shop.getCustomers().removeCustomer(Integer.parseInt(request.getMessage()));
+					removeCustomer(Integer.parseInt(request.getMessage()));
 					break;
 
 				case 14: // Add customer
-					shop.getCustomers().addCustomer((Customer) objectIn.readObject());
+					addCustomer((Customer) request.getObject());
 					break;
 
 				case 15: // Client done DC from server.
