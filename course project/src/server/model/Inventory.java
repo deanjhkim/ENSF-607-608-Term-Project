@@ -111,23 +111,23 @@ public class Inventory {
 	 * Decreases item of given name by 1 and orders item if needed.
 	 * @param name the name of the item to decrease.
 	 */
-	public void decreaseItem(String name) {
+	public int decreaseItem(String name) {
 		Item item = findItem(name);
 		item.setQty(item.getQty() - 1);
 		System.out.println("Item decreased\n");
-		orderItem(item);
+		return orderItem(item);
 	}
 
 	/**
 	 * Creates order for given item if its quantity is below the minimum.
 	 * @param item the item to be ordered.
 	 */
-	public void orderItem(Item item) {
+	public int orderItem(Item item) {
 		if (item.getQty() < MINQTY) {
 			System.out.println("Generating order... \n");
-			generateOrder(item);
+			return generateOrder(item);
 		} else {
-			System.out.print("Sufficient quantity in stock\n");
+			return 0;
 		}
 	}
 	
@@ -149,15 +149,21 @@ public class Inventory {
 	 * Creates order for given item.
 	 * @param item item ordered.
 	 */
-	private void generateOrder(Item item) {
+	private int generateOrder(Item item) {
+		int code;
 		if (this.order == null) {
 			this.order = new Order();
-		}
-		this.order.generateOrderLine(item);
+			code = 2;
+		} else code = 1;
+		return this.order.generateOrderLine(item, code);
 	}
 
 	public Order getOrder() {
 		return this.order;
+	}
+	
+	public void setOrder(Order order) {
+		this.order = order;
 	}
 	
 	public LinkedList<Item> getItems() {

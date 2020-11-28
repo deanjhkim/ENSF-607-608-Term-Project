@@ -109,7 +109,7 @@ public class TestClient {
 				break;
 
 			case 5: // decrease item quantity with name
-				decreaseItemQuantity("Googly Eyes");
+				decreaseItemQuantity("Wing Bats");
 				break;
 
 			case 6: // add item

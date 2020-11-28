@@ -58,8 +58,28 @@ public class ModelController implements Runnable {
 	}
 	
 	public synchronized void decreaseItem(String name) {
-		shop.getInventory().decreaseItem(name);
+		int code = shop.getInventory().decreaseItem(name);
 		dbc.decreaseItem(name);
+		
+		// no order was made so no mods needed to db
+		if(code == 0) {
+			return;
+		}
+		// orderline added to existing order
+		else if (code == 1){
+			dbc.addOrderLine(shop.getInventory().getOrder().getLastOrderLine(), 
+					shop.getInventory().getOrder().getId());
+		}
+		// new order and orderline created
+		else if (code == 2) {
+			dbc.addOrder(shop.getInventory().getOrder());
+		}
+		
+		// existing orderline updated 
+		else if (code == 3) {
+			dbc.updateOrderLine(shop.getInventory().getOrder().findOrderLine(name), 
+					shop.getInventory().getOrder().getId());
+		}
 	}
 
 	public void sendCustomerList(LinkedList<Customer> list) {
@@ -127,7 +147,7 @@ public class ModelController implements Runnable {
 				case 5: // decreases item quantity based on name
 					decreaseItem(request.getMessage());	
 					break;
-
+					
 				case 6: // add item to inventory
 					shop.getInventory().addItem(shop.getSuppliers(), (Item) request.getObject());
 					break;

@@ -17,10 +17,15 @@ public class OrderLine {
 	 * Constructs OrderLine object with quantity needed.
 	 * @param item
 	 */
-	OrderLine(Item item){
+	public OrderLine(Item item){
 		this.item = item;
 		this.qty = 50 - item.getQty();
 		System.out.println("New order of " + this.qty + " units created.\n");
+	}
+	
+	public OrderLine(Item item, int qty){
+		this.item = item;
+		this.qty = qty;
 	}
 	
 	/**
@@ -51,5 +56,9 @@ public class OrderLine {
 	
 	public Item getItem() {
 		return this.item;
+	}
+	
+	public void setItem(Item item) {
+		this.item = item;
 	}
 }
