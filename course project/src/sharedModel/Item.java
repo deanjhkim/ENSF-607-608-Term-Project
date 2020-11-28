@@ -18,6 +18,8 @@ public class Item implements Serializable{
 
 	private int id;
 
+	
+
 	private String description;
 
 	private int qty;
@@ -52,10 +54,14 @@ public class Item implements Serializable{
 	 * @Override
 	 */
 	public String toString() {
-		String s = "Item ID: %d \nItem Description: %s \nItem Quantity: %d \n"
-				+ "Item Price: %.2f \nItem SupplierID: %d\nItem Type: %s\n";
-
-		return String.format(s, this.id, this.description, this.qty, this.price, this.supplierId, this.itemType);
+//		String s = "Item ID: %d \nItem Description: %s \nItem Quantity: %d \n"
+//				+ "Item Price: %.2f \nItem SupplierID: %d\nItem Type: %s\n";
+//
+//		return String.format(s, this.id, this.description, this.qty, this.price, this.supplierId, this.itemType);
+		
+		String s = "Item ID: %d \nItem Description: %s \nItem Quantity: %d \n";
+		return String.format(s, this.id, this.description, this.qty);
+		
 	}
 	
 	/**
@@ -100,6 +106,18 @@ public class Item implements Serializable{
 
 	public void setItemType(String itemType) {
 		this.itemType = itemType;
+	}
+	
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+	public void setSupplierId(int supplierId) {
+		this.supplierId = supplierId;
 	}
 
 }

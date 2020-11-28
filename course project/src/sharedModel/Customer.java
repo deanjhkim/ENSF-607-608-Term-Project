@@ -39,11 +39,13 @@ public class Customer implements Serializable {
 	}
 
 	public String toString() {
-		String s = "Customer ID: %d \nFirst Name: %s \nLast Name: %s \n"
-				+ "Phone Number: %s \nAddress: %s \nPostal Code: %s\nCustomer Type: %s\n";
-
-		return String.format(s, this.id, this.fName, this.lName, this.phoneNumber, this.address, this.postalCode,
-				this.customerType);
+//		String s = "Customer ID: %d \nFirst Name: %s \nLast Name: %s \n"
+//				+ "Phone Number: %s \nAddress: %s \nPostal Code: %s\nCustomer Type: %s\n";
+//
+//		return String.format(s, this.id, this.fName, this.lName, this.phoneNumber, this.address, this.postalCode,
+//				this.customerType);
+		String s = "Customer ID: %d \t, First Name: %s \t, Last Name: %s \t, Customer Type: %s";
+		return String.format(s, this.id, this.fName, this.lName, this.customerType);
 	}
 
 	public int getId() {
