@@ -1,0 +1,8 @@
+package server.controller;
+
+public class ModelController {
+	
+	public ModelController() {
+		
+	}
+}

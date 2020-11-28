@@ -1,0 +1,81 @@
+package client.controller;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.Scanner;
+
+import client.model.LocalShop;
+import sharedModel.Customer;
+import sharedModel.Message;
+import testclient.TestClient;
+
+public class ClientController {
+
+Socket socket;
+ObjectInputStream objectIn;
+ObjectOutputStream objectOut;
+Scanner scan;
+private ModelController mcontrol;
+private ViewController vs;
+
+public ClientController(ModelController mcontrol, String serverName, int portNumber) {
+	this.mcontrol = mcontrol;
+	
+	try {
+		scan = new Scanner(System.in);
+		socket = new Socket(serverName, portNumber);
+		// keyboard input stream
+		System.out.println("Connected to Server!");
+		InputStream inputStream = socket.getInputStream();
+		OutputStream outputStream = socket.getOutputStream();
+
+		objectOut = new ObjectOutputStream(outputStream);
+		objectIn = new ObjectInputStream(inputStream);
+
+	} catch (UnknownHostException e) {
+		e.printStackTrace();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+}
+
+public Customer retrieveCustomerById(String id) {
+	Message message = new Message();
+	message.setServerCode(9);
+	message.setMessage(id);
+	Customer customer = null;
+	try {
+		objectOut.writeObject(message);
+		objectOut.flush();
+		customer = (Customer) objectIn.readObject();
+	} catch (IOException | ClassNotFoundException e) {
+		e.printStackTrace();
+	}
+	return customer;
+}
+
+public ViewController getVs() {
+	return vs;
+}
+
+public void setVs(ViewController vs) {
+	this.vs = vs;
+}
+
+public static void main(String[] args) throws IOException {
+	LocalShop ls = new LocalShop();
+	ModelController mcontrol = new ModelController(ls);
+	ClientController client = new ClientController(mcontrol,"localhost", 9898);
+
+	
+
+}
+
+
+}

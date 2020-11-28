@@ -1,0 +1,22 @@
+package client.controller;
+
+public class ClientController {
+
+	
+private ModelController mcontrol;
+private ViewController vs;
+
+public ClientController(ModelController mcontrol) {
+	this.mcontrol = mcontrol;
+}
+
+public ViewController getVs() {
+	return vs;
+}
+
+public void setVs(ViewController vs) {
+	this.vs = vs;
+}
+
+
+}
