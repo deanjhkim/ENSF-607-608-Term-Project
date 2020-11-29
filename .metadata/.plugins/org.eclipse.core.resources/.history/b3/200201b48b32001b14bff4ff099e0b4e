@@ -24,9 +24,9 @@ public class ShopView {
 	 */
 	MyListener listener;
 	/**
-	 * ViewController class that contains methods for GUI.
+	 * ClientController class that takes input from server.
 	 */
-	ViewController view;
+	ViewController client;
 	
 	JTextArea textArea;
 	/**
@@ -75,7 +75,7 @@ public class ShopView {
 	 */
 	public ShopView() {
 //		client = new ClientController("localhost", 9898);
-		view = new ViewController();
+		client = new ViewController();
 		listener = new MyListener();
 	}
 	
@@ -97,7 +97,7 @@ public class ShopView {
 				if (e.getSource() == searchButton && searchToolNameButton.isSelected()) {
 					
 					itemNames.clear();
-					Item temp = view.retrieveItemByName(userInput);
+					Item temp = client.retrieveItemByName(userInput);
 					
 					itemNames.addElement(temp);
 
@@ -106,7 +106,7 @@ public class ShopView {
 				} else if (e.getSource() == searchButton && searchToolIDButton.isSelected()) {
 			
 					itemNames.clear();
-					Item temp = view.retrieveItemById(userInput);
+					Item temp = client.retrieveItemById(userInput);
 					
 					itemNames.addElement(temp);
 					itemList.addMouseListener(mouseListener);
@@ -115,7 +115,7 @@ public class ShopView {
 				else if (e.getSource() == listAllButton) {
 					itemNames.clear();
 					
-					LinkedList<Item> allitems = view.retrieveItems();
+					LinkedList<Item> allitems = client.retrieveItems();
 					
 					for (Item temp : allitems) {
 						itemNames.addElement(temp);
@@ -127,7 +127,7 @@ public class ShopView {
 				} else if (e.getSource() == decreaseQuantityButton) {
 					
 					item = itemList.getSelectedValue();
-					view.decreaseItemQuantity(item.getDescription());
+					client.decreaseItemQuantity(item.getDescription());
 					
 					itemNames.clear();
 					itemList.clearSelection();

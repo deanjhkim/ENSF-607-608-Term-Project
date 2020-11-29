@@ -8,43 +8,23 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.LinkedList;
-import sharedModel.*;
+import java.util.Scanner;
 
+import client.model.LocalShop;
+import sharedModel.*;
+import testclient.TestClient;
 
 public class ClientController {
 
-private Socket socket;
-private ObjectInputStream objectIn;
-private ObjectOutputStream objectOut;
+Socket socket;
+ObjectInputStream objectIn;
+ObjectOutputStream objectOut;
 
-
-
-public ObjectInputStream getObjectIn() {
-	return objectIn;
-}
-
-
-
-public void setObjectIn(ObjectInputStream objectIn) {
-	this.objectIn = objectIn;
-}
-
-
-
-public ObjectOutputStream getObjectOut() {
-	return objectOut;
-}
-
-
-
-public void setObjectOut(ObjectOutputStream objectOut) {
-	this.objectOut = objectOut;
-}
-
-
+private ModelController mcontrol;
+//private ViewController vs;
 
 public ClientController( String serverName, int portNumber) {
-
+//	this.mcontrol = mcontrol;
 	
 	try {
 		
@@ -60,7 +40,7 @@ public ClientController( String serverName, int portNumber) {
 	} catch (UnknownHostException e) {
 		e.printStackTrace(); 
 	} catch (IOException e) {
-
+		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
 }
@@ -309,11 +289,14 @@ public void disconnect() {
 
 
 public static void main(String[] args) throws IOException {
+//	LocalShop ls = new LocalShop();
 
+//	ClientController client = new ClientController("localhost", 9898);
 	while(true) {
 		
 	}
-
+//	client.menu();
+	
 
 }
 

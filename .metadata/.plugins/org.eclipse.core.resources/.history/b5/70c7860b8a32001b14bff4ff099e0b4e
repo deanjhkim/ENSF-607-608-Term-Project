@@ -12,48 +12,9 @@ import javax.swing.border.LineBorder;
 
 import client.controller.*;
 import sharedModel.*;
-/**
- * 
- * @author deanj
- * GUI view for tool shop database. Has functionality to search for, list, and decrease quantity of tools.
- */
-public class ShopView {
-	
-	/**
-	 * The action listener for the GUI.
-	 */
-	MyListener listener;
-	/**
-	 * ViewController class that contains methods for GUI.
-	 */
-	ViewController view;
-	
-	JTextArea textArea;
-	/**
-	 * Model list containing current search results.
-	 */
-	DefaultListModel<Item> itemNames;
-	/**
-	 * List to display current search results.
-	 */
-	JList <Item> itemList;
-	/**
-	 * The search display panel.
-	 */
-	JScrollPane scroll;
-	/**
-	 * The panel containing the search list.
-	 */
-	JPanel listPanel;
-	/**
-	 * The currently selected item
-	 */
-	Item item;
-	
-	/**
-	 * GUI components.
-	 */
 
+public class ShopView {
+	MyListener listener;
 	JRadioButton searchToolNameButton;
     JRadioButton searchToolIDButton;
     JButton searchButton;
@@ -69,26 +30,22 @@ public class ShopView {
 	JTextField powerTypeField;
 	JTextField supplierIDField;
 	JTextField decreaseQuantityField;
+	ClientController client;
 	
-	/**
-	 * Constructor method makes connection to the server.
-	 */
-	public ShopView() {
-//		client = new ClientController("localhost", 9898);
-		view = new ViewController();
-		listener = new MyListener();
-	}
+	JTextArea textArea;
+	DefaultListModel<Item> itemNames;
+	JList <Item> itemList;
+	JScrollPane scroll;
+	JPanel listPanel;
 	
-	/**
-	 * Overridden action listener class updates GUI based on button selections and text field input.
-	 * @author deanj
-	 *
-	 */
+	Item item;
+	Supplier supplier;
+	
 	class MyListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
+			// TODO Auto-generated method stub
 				String userInput = searchField.getText();
 				
 
@@ -97,25 +54,26 @@ public class ShopView {
 				if (e.getSource() == searchButton && searchToolNameButton.isSelected()) {
 					
 					itemNames.clear();
-					Item temp = view.retrieveItemByName(userInput);
+					Item temp = client.retrieveItemByName(userInput);
 					
 					itemNames.addElement(temp);
-
+//						itemList.updateUI();
 					itemList.addMouseListener(mouseListener);
-
+//						update();
 				} else if (e.getSource() == searchButton && searchToolIDButton.isSelected()) {
 			
 					itemNames.clear();
-					Item temp = view.retrieveItemById(userInput);
+					Item temp = client.retrieveItemById(userInput);
 					
 					itemNames.addElement(temp);
 					itemList.addMouseListener(mouseListener);
+//						update();
 				} 
 				
 				else if (e.getSource() == listAllButton) {
 					itemNames.clear();
 					
-					LinkedList<Item> allitems = view.retrieveItems();
+					LinkedList<Item> allitems = client.retrieveItems();
 					
 					for (Item temp : allitems) {
 						itemNames.addElement(temp);
@@ -126,8 +84,9 @@ public class ShopView {
 				
 				} else if (e.getSource() == decreaseQuantityButton) {
 					
+	//				String decreaseBy = decreaseQuantityField.getText();
 					item = itemList.getSelectedValue();
-					view.decreaseItemQuantity(item.getDescription());
+					client.decreaseItemQuantity(item.getDescription());
 					
 					itemNames.clear();
 					itemList.clearSelection();
@@ -139,32 +98,26 @@ public class ShopView {
 		
 	}
 	
-	MouseListener mouseListener = new MouseAdapter()
-	/**
-	 * Fills information fields in the GUI with the selected items details.
-	 */
-	 {
-    public void mouseClicked(MouseEvent e) {
-        if (e.getClickCount() == 1) {
+	MouseListener mouseListener = new MouseAdapter() {
+	    public void mouseClicked(MouseEvent e) {
+	        if (e.getClickCount() == 1) {
 
 
-            item = (Item) itemList.getSelectedValue();
-          
-            itemIDField.setText(Integer.toString(item.getId()));
-            itemNameField.setText(item.getDescription());
-            quantityField.setText(Integer.toString(item.getQty()));
-            priceField.setText(Double.toString(item.getPrice()));
-            itemTypeField.setText(item.getItemType());
-            supplierIDField.setText(Integer.toString(item.getSupplierId()));
+	            item = (Item) itemList.getSelectedValue();
+	          
+	            itemIDField.setText(Integer.toString(item.getId()));
+	            itemNameField.setText(item.getDescription());
+	            quantityField.setText(Integer.toString(item.getQty()));
+	            priceField.setText(Double.toString(item.getPrice()));
+	            itemTypeField.setText(item.getItemType());
+//	            powerTypeField.setText(item.getPhoneNumber());
+	            supplierIDField.setText(Integer.toString(item.getSupplierId()));
 
 
-         }
-    	}
-	 };
+	         }
+	    }
+	};
 	
-	 /**
-	  * Updates the info fields of the GUI with the current item selection.
-	  */
 	private void update() {
 		
           
@@ -177,23 +130,28 @@ public class ShopView {
           supplierIDField.setText(Integer.toString(item.getSupplierId()));
 	}
 	
-	/**
-	 * Constructs/displays the GUI.
-	 */
 	private void run() {
 		
-		
+		client = new ClientController("localhost", 9898);
 		JFrame svframe = new JFrame("Inventory Management System");
 		svframe.setLayout(new GridLayout());
 		JPanel svpanel = new JPanel();
 		svpanel.setLayout(new BoxLayout(svpanel, BoxLayout.X_AXIS));
 		
 		JPanel topPanel = new JPanel();
+//		topPanel.setAlignmentY(0f);
 		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
+//		GridBagConstraints lpc = new GridBagConstraints();
 	    JLabel topTitle = new JLabel("Search Clients");
 	    topTitle.setFont(new Font("Verdana",1,20));
+//	    leftTitle.setVerticalAlignment(JLabel.TOP);
 	    
+	    listener = new MyListener();
+	    
+//	    topPanel.add(topTitle);
 	    topPanel.setBorder(new LineBorder(Color.BLACK));
+	    
+	    
 	    searchToolNameButton = new JRadioButton("Tool Name");
 	    searchToolIDButton = new JRadioButton("Tool ID");
 	    listAllButton = new JButton("List");
@@ -233,23 +191,33 @@ public class ShopView {
 		topPanel.add(listAllButton);
 		
 		topPanel.add(Box.createRigidArea(new Dimension(0,15)));
+		
 		checkItemQuantityButton = new JButton("Check item quantity");
 		
 		JLabel checkItemPrompt = new JLabel("Check the quantity of an item: ");
 		checkItemPrompt.setFont(new Font("Verdana",1,20));
+//		topPanel.add(checkItemPrompt);
 		JLabel checkInstructPrompt = new JLabel("Enter tool name:");
 		checkInstructPrompt.setFont(new Font("Verdana",1,13));
+//		topPanel.add(checkInstructPrompt);
 		JTextField checkItemField = new JTextField();
 		checkItemField.setMaximumSize(new Dimension(300,24));
+//		topPanel.add(checkItemField);
+//		topPanel.add(Box.createRigidArea(new Dimension(0,15)));
+//		topPanel.add(checkItemQuantityButton);
 		
+//		topPanel.add(Box.createRigidArea(new Dimension(0,15)));
 		decreaseQuantityButton = new JButton("Decrease item quantity");
+		
 		JLabel decreaseQuantityPrompt = new JLabel("Decrease the quantity of an item: ");
 		decreaseQuantityPrompt.setFont(new Font("Verdana",1,20));
 		topPanel.add(decreaseQuantityPrompt);
 		JLabel decreaseInstructPrompt = new JLabel("Enter decrease quantity:");
 		decreaseInstructPrompt.setFont(new Font("Verdana",1,13));
+//		topPanel.add(decreaseInstructPrompt);
 		decreaseQuantityField = new JTextField();
 		decreaseQuantityField.setMaximumSize(new Dimension(300,24));
+//		topPanel.add(decreaseQuantityField);
 		topPanel.add(Box.createRigidArea(new Dimension(0,15)));
 		topPanel.add(decreaseQuantityButton);
 		topPanel.add(Box.createRigidArea(new Dimension(0,15)));
@@ -270,8 +238,10 @@ public class ShopView {
 	    
 	    JPanel bottomPanel = new JPanel();
 	    bottomPanel.setPreferredSize(new Dimension(300,2000));
+//	    bottomPanel.setAlignmentY(0f);
 	    bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.Y_AXIS));	  
 		JLabel rightTitle = new JLabel("Search Results");
+//		rightTitle.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 	    rightTitle.setFont(new Font("Verdana",1,15));
 	    bottomPanel.add(rightTitle);
 	    bottomPanel.setBorder(new LineBorder(Color.BLACK));
@@ -356,6 +326,21 @@ public class ShopView {
 	    bottomPanel.add(itemTypePanel);
 	    bottomPanel.add(Box.createRigidArea(new Dimension(0, 30)));
 	    
+//	    JPanel powerTypePanel = new JPanel();
+//	    powerTypePanel.setLayout( new BoxLayout(powerTypePanel, BoxLayout.X_AXIS));
+//	    powerTypePanel.setMaximumSize(new Dimension(700, 45));
+//	    powerTypePanel.add(Box.createRigidArea(new Dimension(15,0)));
+//	    JLabel phoneNumberLabel = new JLabel("Power Type:");
+//	    powerTypePanel.add(phoneNumberLabel);
+//	    powerTypePanel.add(Box.createRigidArea(new Dimension(15,0)));
+//	    powerTypeField = new JTextField();
+//	    powerTypeField.setPreferredSize(new Dimension(5,15));
+//	    powerTypeField.setMaximumSize(new Dimension(300,24));
+//	    powerTypePanel.add(powerTypeField);
+//	    powerTypePanel.add(Box.createRigidArea(new Dimension(15,0)));
+//	    
+//	    bottomPanel.add(powerTypePanel);
+//	    bottomPanel.add(Box.createRigidArea(new Dimension(0, 30)));
 
 	    JPanel supplierIDPanel = new JPanel();
 	    supplierIDPanel.setLayout( new BoxLayout(supplierIDPanel, BoxLayout.X_AXIS));
@@ -372,9 +357,15 @@ public class ShopView {
 	    
 	    bottomPanel.add(supplierIDPanel);
 	    bottomPanel.add(Box.createRigidArea(new Dimension(0, 30)));
+	    
+	    
+        
+       
         bottomPanel.add(Box.createRigidArea(new Dimension(0, 30)));
        
-	   
+	    
+//        searchToolNameButton.addActionListener(listener);
+//        searchToolIDButton.addActionListener(listener);
         searchButton.addActionListener(listener);
         listAllButton.addActionListener(listener);
     	checkItemQuantityButton.addActionListener(listener);
@@ -388,10 +379,7 @@ public class ShopView {
 		
 	}
 	
-	/**
-	 * Create a new ShopView object and call run() to display the GUI.
-	 * 
-	 */
+	
 	public static void main(String [] args ) {
 		ShopView sview = new ShopView();
 		sview.run();

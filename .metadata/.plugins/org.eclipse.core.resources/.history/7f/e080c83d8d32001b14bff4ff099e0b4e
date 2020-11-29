@@ -15,46 +15,14 @@ import java.util.LinkedList;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+
 import client.*;
 import client.controller.*;
 import client.model.LocalShop;
 import sharedModel.Customer;
 
-/**
- * 
- * @author deanj
- * GUI view for customer database. Has functionality to search for and edit info of customers.
- */
 public class ClientView {
-	
-	/**
-	 * The ViewController providing method functionality to the GUI.
-	 */
-	ViewController view;
-	/**
-	 * Action listener for button selection action.
-	 */
 	MyListener listener;
-
-	/**
-	 * Contains the types of clients.
-	 */
-	JComboBox<String> clientTypeBox;
-	/**
-	 * Model containing the customer search results
-	 */
-	DefaultListModel<Customer> customerNames;
-	/**
-	 * List displaying the customer search results
-	 */
-	JList <Customer>custList; 
-	/**
-	 * The current customer selected
-	 */
-	Customer customer;
-	/**
-	 * GUI components.
-	 */
 	JRadioButton cIDButton;
     JRadioButton lastNameButton;
     JRadioButton clientTypeButton;
@@ -64,26 +32,27 @@ public class ClientView {
 	JButton searchButton;
 	JButton clearSearchButton;
 	JScrollPane scroll;
+	JTextArea textArea;
+	ViewController view;
 	JTextField searchBar;
+	
 	JTextField clientIDField;
 	JTextField firstNameField;
 	JTextField lastNameField;
 	JTextField addressField;
 	JTextField postalCodeField;
 	JTextField phoneNumberField;
+	JComboBox<String> clientTypeBox;
 	
-	/**
-	 * Constructor method aggregates ViewController object.
-	 */
+	DefaultListModel<Customer> customerNames;
+	JList <Customer>custList; 
+	Customer customer;
+	
+	
 	public ClientView () {
 		this.view = new ViewController();
 		
 	}
-	/**
-	 * Overridden action listener class updates GUI based on button selections and text field input.
-	 * @author deanj
-	 *
-	 */
 	class MyListener implements ActionListener {
 
 		@Override
@@ -137,14 +106,12 @@ public class ClientView {
 			} else if (e.getSource() == clearSearchButton) {
 				customerNames.clear();
 			}
-		}	
+		}
+
+		
 		
 	}
 	
-	/**
-	 * Checks the selection in the clientTypeBox and translates to the convention used in the SQL database.
-	 * @return
-	 */
 	private String getClientTypeChar() {
 		if (clientTypeBox.getSelectedIndex() == 1) {
 			return "R";
@@ -157,37 +124,31 @@ public class ClientView {
 		
 	}			
 			  
-	MouseListener mouseListener = new MouseAdapter()
-	/**
-	 * Fills information fields in the GUI with the selected items details.
-	 */{
-    public void mouseClicked(MouseEvent e) {
-        if (e.getClickCount() == 1) {
+	MouseListener mouseListener = new MouseAdapter() {
+	    public void mouseClicked(MouseEvent e) {
+	        if (e.getClickCount() == 2) {
 
 
-            customer = (Customer) custList.getSelectedValue();
-          
-            clientIDField.setText(Integer.toString(customer.getId()));
-			firstNameField.setText(customer.getfName());
-			lastNameField.setText(customer.getlName());
-			addressField.setText(customer.getAddress());
-			postalCodeField.setText(customer.getPostalCode());
-			phoneNumberField.setText(customer.getPhoneNumber());
-			
-			String s = customer.getCustomerType();
-			if (s.equalsIgnoreCase("R")) {
-				clientTypeBox.setSelectedIndex(1);
-			} else if ( s.equalsIgnoreCase("C")) {
-				clientTypeBox.setSelectedIndex(2);
-			}
+	            customer = (Customer) custList.getSelectedValue();
+	          
+	            clientIDField.setText(Integer.toString(customer.getId()));
+				firstNameField.setText(customer.getfName());
+				lastNameField.setText(customer.getlName());
+				addressField.setText(customer.getAddress());
+				postalCodeField.setText(customer.getPostalCode());
+				phoneNumberField.setText(customer.getPhoneNumber());
+				
+				String s = customer.getCustomerType();
+				if (s.equalsIgnoreCase("R")) {
+					clientTypeBox.setSelectedIndex(1);
+				} else if ( s.equalsIgnoreCase("C")) {
+					clientTypeBox.setSelectedIndex(2);
+				}
 
-         	}
-    	}
+	         }
+	    }
 	};
 	
-	/**
-	 * Constructs/displays the GUI.
-	 */
 	public void run() {
 
 		
@@ -212,6 +173,8 @@ public class ClientView {
 	    cIDButton = new JRadioButton("Client ID");
 	    lastNameButton = new JRadioButton("Last Name");
 	    clientTypeButton = new JRadioButton("Client Type");
+	    
+	    
 	    
 	    ButtonGroup searchOptions = new ButtonGroup();
 	    searchOptions.add(cIDButton);
@@ -247,6 +210,10 @@ public class ClientView {
 	    searchPanel.add(Box.createRigidArea(new Dimension(5,0)));
 	    leftPanel.add(searchPanel);
 	    
+	    textArea = new JTextArea("TEST");
+	    textArea.setSize(400,400);    
+
+        
         customerNames = new DefaultListModel<Customer>();
         custList = new JList<Customer>(customerNames);
 		custList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -422,12 +389,9 @@ public class ClientView {
 		cvframe.setVisible(true);
 		
 	}
-	/**
-	 * Constructs a ClientView object and calls run() to build/display the GUI.
-	 * 
-	 */
 	public static void main(String [] args ) {
 		ClientView cview = new ClientView();
+		
 		cview.run();
 	
 	}

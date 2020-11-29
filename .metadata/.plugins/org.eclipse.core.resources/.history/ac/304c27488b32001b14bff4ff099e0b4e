@@ -13,33 +13,9 @@ import sharedModel.*;
 
 public class ClientController {
 
-private Socket socket;
-private ObjectInputStream objectIn;
-private ObjectOutputStream objectOut;
-
-
-
-public ObjectInputStream getObjectIn() {
-	return objectIn;
-}
-
-
-
-public void setObjectIn(ObjectInputStream objectIn) {
-	this.objectIn = objectIn;
-}
-
-
-
-public ObjectOutputStream getObjectOut() {
-	return objectOut;
-}
-
-
-
-public void setObjectOut(ObjectOutputStream objectOut) {
-	this.objectOut = objectOut;
-}
+Socket socket;
+ObjectInputStream objectIn;
+ObjectOutputStream objectOut;
 
 
 

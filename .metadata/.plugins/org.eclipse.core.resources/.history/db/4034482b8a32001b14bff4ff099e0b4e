@@ -8,43 +8,23 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.LinkedList;
-import sharedModel.*;
+import java.util.Scanner;
 
+import client.model.LocalShop;
+import sharedModel.*;
+import testclient.TestClient;
 
 public class ClientController {
 
-private Socket socket;
-private ObjectInputStream objectIn;
-private ObjectOutputStream objectOut;
+Socket socket;
+ObjectInputStream objectIn;
+ObjectOutputStream objectOut;
 
-
-
-public ObjectInputStream getObjectIn() {
-	return objectIn;
-}
-
-
-
-public void setObjectIn(ObjectInputStream objectIn) {
-	this.objectIn = objectIn;
-}
-
-
-
-public ObjectOutputStream getObjectOut() {
-	return objectOut;
-}
-
-
-
-public void setObjectOut(ObjectOutputStream objectOut) {
-	this.objectOut = objectOut;
-}
-
-
+private ModelController mcontrol;
+//private ViewController vs;
 
 public ClientController( String serverName, int portNumber) {
-
+//	this.mcontrol = mcontrol;
 	
 	try {
 		
@@ -60,12 +40,117 @@ public ClientController( String serverName, int portNumber) {
 	} catch (UnknownHostException e) {
 		e.printStackTrace(); 
 	} catch (IOException e) {
-
+		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
 }
 
+public void menu() {
 
+	while (true) {
+
+//		printMenu();
+
+		int choice = scan.nextInt();
+		scan.nextLine();
+
+		switch (choice) {
+
+		case 1: // get item list
+			LinkedList<Item> items = retrieveItems();
+
+			System.out.println("Printing Items");
+			for (Item item : items) {
+				System.out.println(item);
+			}
+			break;
+
+		case 2: // get supplier list
+			LinkedList<Supplier> suppliers = retrieveSuppliers();
+
+			System.out.println("Printing Suppliers");
+			for (Supplier supplier : suppliers) {
+				System.out.println(supplier);
+			}
+			break;
+
+		case 3: // get item by name
+			Item item = retrieveItemByName("Googly Eyes");
+
+			System.out.println(item);
+			break;
+
+		case 4: // get item by id
+			Item item2 = retrieveItemById("1000");
+
+//			itemIDSearched = item2;
+			break;
+
+		case 5: // decrease item quantity with name
+			decreaseItemQuantity("Googly Eyes");
+			break;
+
+		case 6: // add item
+			Item itemNew = new ElectricItem(6000, "Coco puffs", 21, 21.2, 8010, "Electrical", "DC");
+			addItemToInventory(itemNew);
+			break;
+
+		case 7: // remove item with name
+			removeItemFromInventory("Handy Pandies");
+			break;
+
+		case 8: // get customers
+			LinkedList<Customer> customers = retrieveCustomers();
+
+			System.out.println("Printing Customers");
+			for (Customer customer : customers) {
+				System.out.println(customer);
+			}
+			break;
+
+		case 9: // get customer with id
+			Customer customer = retrieveCustomerById("1024");
+			System.out.println(customer);
+			break;
+
+		case 10: // get customer list with given last name
+			LinkedList<Customer> customers2 = retrieveCustomersByLName("Smith");
+			for (Customer customer2 : customers2) {
+				System.out.println(customer2);
+			}
+			break;
+
+		case 11: // get customer list with given type
+			LinkedList<Customer> customers3 = retrieveCustomersByType("C");
+			for (Customer customer3 : customers3) {
+				System.out.println(customer3);
+			}
+			break;
+			
+		case 12: // modify customer with given ID
+			Customer customer4 = new Customer(1020, "number", "John", "Jim", "address", "TSDWSD", "R");
+			modifyCustomer(customer4);
+			break;
+
+		case 13: // remove a customer based on id
+			removeCustomer("1023");
+			break;
+
+		case 14: // add a customer
+			Customer customer5 = new Customer(1029, "number", "John", "Jim", "address", "TSDWSD", "R");
+			addCustomer(customer5);
+			break;
+
+		case 15: // DC from server end application
+			disconnect();
+			return;
+
+		default:
+			System.out.println("Invalid selection try again!");
+			break;
+		}
+	}
+}
 
 public LinkedList<Item> retrieveItems() {
 	Message message = new Message();
@@ -309,11 +394,14 @@ public void disconnect() {
 
 
 public static void main(String[] args) throws IOException {
+//	LocalShop ls = new LocalShop();
 
+//	ClientController client = new ClientController("localhost", 9898);
 	while(true) {
 		
 	}
-
+//	client.menu();
+	
 
 }
 
