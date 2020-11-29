@@ -1,0 +1,321 @@
+package client.controller;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.LinkedList;
+import sharedModel.*;
+
+
+public class ClientController {
+
+private Socket socket;
+private ObjectInputStream objectIn;
+private ObjectOutputStream objectOut;
+
+
+
+public ObjectInputStream getObjectIn() {
+	return objectIn;
+}
+
+
+
+public void setObjectIn(ObjectInputStream objectIn) {
+	this.objectIn = objectIn;
+}
+
+
+
+public ObjectOutputStream getObjectOut() {
+	return objectOut;
+}
+
+
+
+public void setObjectOut(ObjectOutputStream objectOut) {
+	this.objectOut = objectOut;
+}
+
+
+
+public ClientController( String serverName, int portNumber) {
+
+	
+	try {
+		
+		socket = new Socket(serverName, portNumber);
+		// keyboard input stream
+		System.out.println("Connected to Server!");
+		InputStream inputStream = socket.getInputStream();
+		OutputStream outputStream = socket.getOutputStream();
+
+		objectOut = new ObjectOutputStream(outputStream);
+		objectIn = new ObjectInputStream(inputStream);
+
+	} catch (UnknownHostException e) {
+		e.printStackTrace(); 
+	} catch (IOException e) {
+
+		e.printStackTrace();
+	}
+}
+
+
+
+public LinkedList<Item> retrieveItems() {
+	Message message = new Message();
+	message.setServerCode(1);
+	LinkedList<Item> items = new LinkedList<Item>();
+	try {
+		objectOut.writeObject(message);
+		objectOut.flush();
+		while (true) {
+			Object obj = objectIn.readObject();
+
+			if (obj instanceof Message)
+				break;
+
+			items.add((Item) obj);
+		}
+	} catch (IOException | ClassNotFoundException e) {
+		e.printStackTrace();
+	}
+	return items;
+}
+
+public LinkedList<Supplier> retrieveSuppliers() {
+	Message message = new Message();
+	message.setServerCode(2);
+	LinkedList<Supplier> suppliers = new LinkedList<Supplier>();
+	try {
+		objectOut.writeObject(message);
+		objectOut.flush();
+		while (true) {
+			Object obj = objectIn.readObject();
+
+			if (obj instanceof Message)
+				break;
+
+			suppliers.add((Supplier) obj);
+		}
+	} catch (IOException | ClassNotFoundException e) {
+		e.printStackTrace();
+	}
+	return suppliers;
+}
+
+public Item retrieveItemByName(String name) {
+	Message message = new Message();
+	message.setServerCode(3);
+	message.setMessage(name);
+	Item item = null;
+	try {
+		objectOut.writeObject(message);
+		objectOut.flush();
+		item = (Item) objectIn.readObject();
+	} catch (IOException | ClassNotFoundException e) {
+		e.printStackTrace();
+	}
+	return item;
+}
+
+public Item retrieveItemById(String id) {
+	Message message = new Message();
+	message.setServerCode(4);
+	message.setMessage(id);
+	Item item = null;
+	try {
+		objectOut.writeObject(message);
+		objectOut.flush();
+		item = (Item) objectIn.readObject();
+	} catch (IOException | ClassNotFoundException e) {
+		e.printStackTrace();
+	}
+	return item;
+}
+
+public void decreaseItemQuantity(String name) {
+	Message message = new Message();
+	message.setServerCode(5);
+	message.setMessage(name);
+	try {
+		objectOut.writeObject(message);
+		objectOut.flush();
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+}
+
+public void addItemToInventory(Item item) {
+	Message message = new Message();
+	message.setServerCode(6);
+	message.setObject(item);
+	try {
+		objectOut.writeObject(message);
+		objectOut.flush();
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+}
+
+public void removeItemFromInventory(String name) {
+	Message message = new Message();
+	message.setServerCode(7);
+	message.setMessage(name);
+	try {
+		objectOut.writeObject(message);
+		objectOut.flush();
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+}
+
+public LinkedList<Customer> retrieveCustomers() {
+	Message message = new Message();
+	message.setServerCode(8);
+	LinkedList<Customer> customers = new LinkedList<Customer>();
+	try {
+		objectOut.writeObject(message);
+		objectOut.flush();
+		while (true) {
+			Object obj = objectIn.readObject();
+
+			if (obj instanceof Message)
+				break;
+
+			customers.add((Customer) obj);
+		}
+	} catch (IOException | ClassNotFoundException e) {
+		e.printStackTrace();
+	}
+	return customers;
+}
+
+public Customer retrieveCustomerById(String id) {
+	Message message = new Message();
+	message.setServerCode(9);
+	message.setMessage(id);
+	Customer customer = null;
+	try {
+		objectOut.writeObject(message);
+		objectOut.flush();
+		customer = (Customer) objectIn.readObject();
+		System.out.println(customer.toString());
+	} catch (IOException | ClassNotFoundException e) {
+		e.printStackTrace();
+	}
+	
+	return customer;
+}
+
+public LinkedList<Customer> retrieveCustomersByLName(String LName) {
+	Message message = new Message();
+	message.setServerCode(10);
+	message.setMessage(LName);
+	LinkedList<Customer> customers = new LinkedList<Customer>();
+	try {
+		objectOut.writeObject(message);
+		objectOut.flush();
+		while (true) {
+			Object obj = objectIn.readObject();
+
+			if (obj instanceof Message)
+				break;
+
+			customers.add((Customer) obj);
+		}
+	} catch (IOException | ClassNotFoundException e) {
+		e.printStackTrace();
+	}
+	return customers;
+}
+
+public LinkedList<Customer> retrieveCustomersByType(String type) {
+	Message message = new Message();
+	message.setServerCode(11);
+	message.setMessage(type);
+	LinkedList<Customer> customers = new LinkedList<Customer>();
+	try {
+		objectOut.writeObject(message);
+		objectOut.flush();
+		while (true) {
+			Object obj = objectIn.readObject();
+
+			if (obj instanceof Message)
+				break;
+
+			customers.add((Customer) obj);
+		}
+	} catch (IOException | ClassNotFoundException e) {
+		e.printStackTrace();
+	}
+	return customers;
+}
+
+public void modifyCustomer(Customer customer) {
+	Message message = new Message();
+	message.setServerCode(12);
+	message.setObject(customer);
+	try {
+		objectOut.writeObject(message);
+		objectOut.flush();
+
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+}
+
+public void removeCustomer(String id) {
+	Message message = new Message();
+	message.setServerCode(13);
+	message.setMessage(id);
+	try {
+		objectOut.writeObject(message);
+		objectOut.flush();
+
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+}
+
+public void addCustomer(Customer customer) {
+	Message message = new Message();
+	message.setServerCode(14);
+	message.setObject(customer);
+	try {
+		objectOut.writeObject(message);
+		objectOut.flush();
+
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+}
+
+public void disconnect() {
+	Message message = new Message();
+	message.setServerCode(15);
+	try {
+		objectOut.writeObject(message);
+		objectOut.flush();
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+}
+
+
+public static void main(String[] args) throws IOException {
+
+	while(true) {
+		
+	}
+
+
+}
+
+
+}

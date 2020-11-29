@@ -8,29 +8,12 @@ import java.io.ObjectOutputStream;
 import java.util.LinkedList;
 import sharedModel.*;
 
-/**
- * Has methods for functionality of GUI, communicates to backend using ClientController object.
- * @author deanj
- *
- */
 public class ViewController {
 	
-	/**
-	 * The connected input stream from the ClientController.
-	 */
 	ObjectInputStream objectIn;
-	/**
-	 * The connected output stream from the ClientController.
-	 */
 	ObjectOutputStream objectOut;
-	/**
-	 * The ClientController connected to the backend.
-	 */
 	private ClientController cc;
 	
-	/**
-	 * Constructor method creates new ClientController object connected to backend.
-	 */
 	public ViewController () {
 		
 		
@@ -40,10 +23,7 @@ public class ViewController {
 		
 	}
 
-	/**
-	 * Returns all items in the SQL DB.
-	 * @return LinkedList with all Items in the DB
-	 */
+
 	public LinkedList<Item> retrieveItems() {
 		Message message = new Message();
 		message.setServerCode(1);
@@ -64,11 +44,7 @@ public class ViewController {
 		}
 		return items;
 	}
-	
-	/**
-	 * Retrieves all Suppliers in the DB.
-	 * @return LinkedList with all Suppliers in the DB
-	 */
+
 	public LinkedList<Supplier> retrieveSuppliers() {
 		Message message = new Message();
 		message.setServerCode(2);
@@ -89,12 +65,7 @@ public class ViewController {
 		}
 		return suppliers;
 	}
-	
-	/**
-	 * Searches DB for item by name
-	 * @param name the name of the item
-	 * @return the Item with the given name
-	 */
+
 	public Item retrieveItemByName(String name) {
 		Message message = new Message();
 		message.setServerCode(3);
@@ -109,12 +80,7 @@ public class ViewController {
 		}
 		return item;
 	}
-	
-	/**
-	 * Searches DB for item by ID
-	 * @param id the id of the item
-	 * @return the Item with the given ID
-	 */
+
 	public Item retrieveItemById(String id) {
 		Message message = new Message();
 		message.setServerCode(4);
@@ -129,11 +95,7 @@ public class ViewController {
 		}
 		return item;
 	}
-	
-	/**
-	 * Decreases the quantity of the item by 1.
-	 * @param name the name of the item to be decreased
-	 */
+
 	public void decreaseItemQuantity(String name) {
 		Message message = new Message();
 		message.setServerCode(5);
@@ -145,11 +107,7 @@ public class ViewController {
 			e.printStackTrace();
 		}
 	}
-	
-	/**
-	 * adds item to Inventory
-	 * @param item item to be added to Inventory
-	 */
+
 	public void addItemToInventory(Item item) {
 		Message message = new Message();
 		message.setServerCode(6);
@@ -161,11 +119,7 @@ public class ViewController {
 			e.printStackTrace();
 		}
 	}
-	
-	/**
-	 * Removes item from inventory
-	 * @param name the name of the item to remove
-	 */
+
 	public void removeItemFromInventory(String name) {
 		Message message = new Message();
 		message.setServerCode(7);
@@ -177,11 +131,7 @@ public class ViewController {
 			e.printStackTrace();
 		}
 	}
-	
-	/**
-	 * Retrieves all customers from DB
-	 * @return LinkedList containing all customers
-	 */
+
 	public LinkedList<Customer> retrieveCustomers() {
 		Message message = new Message();
 		message.setServerCode(8);
@@ -202,11 +152,7 @@ public class ViewController {
 		}
 		return customers;
 	}
-	/**
-	 * Searches DB for customer with ID
-	 * @param id the ID of the customer
-	 * @return customer the customer with the given ID
-	 */
+
 	public Customer retrieveCustomerById(String id) {
 		Message message = new Message();
 		message.setServerCode(9);
@@ -223,12 +169,7 @@ public class ViewController {
 		
 		return customer;
 	}
-	
-	/**
-	 * Searches DB for customers by last name
-	 * @param LName the last name to be searched for
-	 * @return LinkedList containing all customers with given last name
-	 */
+
 	public LinkedList<Customer> retrieveCustomersByLName(String LName) {
 		Message message = new Message();
 		message.setServerCode(10);
@@ -250,11 +191,7 @@ public class ViewController {
 		}
 		return customers;
 	}
-	/**
-	 * Returns all customers of a specific type
-	 * @param type the specified type
-	 * @return customers LinkedList of all customers of that type
-	 */
+
 	public LinkedList<Customer> retrieveCustomersByType(String type) {
 		Message message = new Message();
 		message.setServerCode(11);
@@ -276,11 +213,7 @@ public class ViewController {
 		}
 		return customers;
 	}
-	
-	/**
-	 * Modifies customer info in the DB
-	 * @param customer customer with updated fields
-	 */
+
 	public void modifyCustomer(Customer customer) {
 		Message message = new Message();
 		message.setServerCode(12);
@@ -293,11 +226,7 @@ public class ViewController {
 			e.printStackTrace();
 		}
 	}
-	
-	/**
-	 * Removes customer from DB with given ID
-	 * @param id the ID for which a customer will be removed
-	 */
+
 	public void removeCustomer(String id) {
 		Message message = new Message();
 		message.setServerCode(13);
@@ -310,11 +239,7 @@ public class ViewController {
 			e.printStackTrace();
 		}
 	}
-	
-	/**
-	 * Adds a customer to the DB
-	 * @param customer customer to be added
-	 */
+
 	public void addCustomer(Customer customer) {
 		Message message = new Message();
 		message.setServerCode(14);
@@ -327,10 +252,7 @@ public class ViewController {
 			e.printStackTrace();
 		}
 	}
-	
-	/**
-	 * Disconnects from the connection.
-	 */
+
 	public void disconnect() {
 		Message message = new Message();
 		message.setServerCode(15);
