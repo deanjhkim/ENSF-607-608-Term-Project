@@ -4,6 +4,7 @@ package client.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,7 +15,9 @@ import java.util.LinkedList;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import client.*;
 import client.controller.*;
+import client.model.LocalShop;
 import sharedModel.Customer;
 
 /**
@@ -58,10 +61,10 @@ public class ClientView {
     JButton saveButton;
     JButton deleteButton;
     JButton clearButton;
-	JButton searchButtonClient;
+	JButton searchButton;
 	JButton clearSearchButton;
 	JButton addButton;
-	JScrollPane scroll2;
+	JScrollPane scroll;
 	JTextField searchBar;
 	JTextField clientIDField;
 	JTextField firstNameField;
@@ -100,7 +103,7 @@ public class ClientView {
 				addressField.setText("");
 				postalCodeField.setText("");
 				phoneNumberField.setText("");
-			} else if (e.getSource() == searchButtonClient) {
+			} else if (e.getSource() == searchButton) {
 				String id = searchBar.getText();
 				System.out.println(id);
 				
@@ -239,9 +242,9 @@ public class ClientView {
 	    searchBar.setMaximumSize(new Dimension(300,24));
 	    searchPanel.add(searchBar);
 	    searchPanel.add(Box.createRigidArea(new Dimension(15,0)));
-	    searchButtonClient = new JButton("Search"); 
+	    searchButton = new JButton("Search"); 
 
-	    searchPanel.add(searchButtonClient);
+	    searchPanel.add(searchButton);
 	    searchPanel.add(Box.createRigidArea(new Dimension(15,0)));
 	    clearSearchButton = new JButton("Clear Search"); 
 	    searchPanel.add(clearSearchButton);
@@ -251,16 +254,16 @@ public class ClientView {
         customerNames = new DefaultListModel<Customer>();
         custList = new JList<Customer>(customerNames);
 		custList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        scroll2 = new JScrollPane (custList);
-        scroll2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scroll = new JScrollPane (custList);
+        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         
         leftPanel.add(Box.createRigidArea(new Dimension(0, 60)));
         
         JLabel displayTitle = new JLabel("Search Results");
         leftPanel.add(displayTitle);
         leftPanel.add(Box.createRigidArea(new Dimension(0, 30)));
-        leftPanel.add(scroll2);
-        scroll2.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+        leftPanel.add(scroll);
+        scroll.setAlignmentX(JLabel.LEFT_ALIGNMENT);
         searchPanel.setAlignmentX(JLabel.LEFT_ALIGNMENT);
         leftPanel.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 
@@ -416,7 +419,7 @@ public class ClientView {
 	    saveButton.addActionListener(listener);
 	    deleteButton.addActionListener(listener);
 	    clearButton.addActionListener(listener);
-		searchButtonClient.addActionListener(listener);
+		searchButton.addActionListener(listener);
 		clearSearchButton.addActionListener(listener);
 		addButton.addActionListener(listener);
 		

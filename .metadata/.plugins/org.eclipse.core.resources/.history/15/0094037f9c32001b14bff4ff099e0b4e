@@ -1,37 +1,89 @@
-
-
 package client.view;
-import java.awt.BorderLayout;
+
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.LinkedList;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.LineBorder;
-import client.controller.*;
-import sharedModel.Customer;
 
-/**
- * 
- * @author deanj
- * GUI view for customer database. Has functionality to search for and edit info of customers.
- */
-public class ClientView {
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.border.LineBorder;
+
+import client.controller.ViewController;
+import client.view.ShopView.MyListener;
+import sharedModel.Customer;
+import sharedModel.Item;
+
+public class TabGUI {
 	
 	/**
-	 * The ViewController providing method functionality to the GUI.
-	 */
-	ViewController view;
-	/**
-	 * Action listener for button selection action.
+	 * The action listener for the GUI.
 	 */
 	MyListener listener;
+	/**
+	 * ViewController class that contains methods for GUI.
+	 */
+	ViewController view;
+	
+	JTextArea textArea;
+	/**
+	 * Model list containing current search results.
+	 */
+	DefaultListModel<Item> itemNames;
+	/**
+	 * List to display current search results.
+	 */
+	JList <Item> itemList;
+	/**
+	 * The search display panel.
+	 */
+	JScrollPane scroll;
+	/**
+	 * The panel containing the search list.
+	 */
+	JPanel listPanel;
+	/**
+	 * The currently selected item
+	 */
+	Item item;
+	
+	/**
+	 * GUI components.
+	 */
+
+	JRadioButton searchToolNameButton;
+    JRadioButton searchToolIDButton;
+    JButton searchButton;
+    JButton listAllButton;
+	JButton checkItemQuantityButton;
+	JButton decreaseQuantityButton;
+	JTextField searchField;
+	JTextField itemIDField;
+	JTextField itemNameField;
+	JTextField quantityField;
+	JTextField priceField;
+	JTextField itemTypeField;
+	JTextField powerTypeField;
+	JTextField supplierIDField;
+	JTextField decreaseQuantityField;
+	
 
 	/**
 	 * Contains the types of clients.
@@ -70,13 +122,7 @@ public class ClientView {
 	JTextField postalCodeField;
 	JTextField phoneNumberField;
 	
-	/**
-	 * Constructor method aggregates ViewController object.
-	 */
-	public ClientView () {
-		this.view = new ViewController();
-		
-	}
+	
 	/**
 	 * Overridden action listener class updates GUI based on button selections and text field input.
 	 * @author deanj
@@ -86,8 +132,10 @@ public class ClientView {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			 
-				
+			
+			String userInput = searchField.getText();
+			String id = searchBar.getText();
+			
 			if (e.getSource() == saveButton) {
 				customer.setFields(phoneNumberField.getText(), firstNameField.getText(), lastNameField.getText(), addressField.getText(), postalCodeField.getText(), getClientTypeChar());
 				view.modifyCustomer(customer);
@@ -101,14 +149,14 @@ public class ClientView {
 				postalCodeField.setText("");
 				phoneNumberField.setText("");
 			} else if (e.getSource() == searchButtonClient) {
-				String id = searchBar.getText();
+				id = searchBar.getText();
 				System.out.println(id);
 				
 				if (cIDButton.isSelected()) {
 					customer = view.retrieveCustomerById(id);
 					customerNames.clear();
 					customerNames.addElement(customer);					
-					custList.addMouseListener(mouseListener);
+					custList.addMouseListener(mouseListenerCustomer);
 
 				} else if(lastNameButton.isSelected()) {
 					customerNames.clear();
@@ -117,7 +165,7 @@ public class ClientView {
 						customerNames.addElement(temp);	
 						
 					}
-					custList.addMouseListener(mouseListener);
+					custList.addMouseListener(mouseListenerCustomer);
 					
 					
 				} else if(clientTypeButton.isSelected()) {
@@ -129,7 +177,7 @@ public class ClientView {
 						customerNames.addElement(temp);	
 						
 					}
-					custList.addMouseListener(mouseListener);
+					custList.addMouseListener(mouseListenerCustomer);
 				}
 				
 			} else if (e.getSource() == clearSearchButton) {
@@ -137,7 +185,47 @@ public class ClientView {
 			} else if (e.getSource() == addButton ) {
 				customer = new Customer(Integer.parseInt(clientIDField.getText()), phoneNumberField.getText(), firstNameField.getText(), lastNameField.getText(), addressField.getText(), postalCodeField.getText(), getClientTypeChar());
 				view.addCustomer(customer);
-			}
+			} else if (e.getSource() == searchButton && searchToolNameButton.isSelected()) {
+				
+				itemNames.clear();
+				Item temp = view.retrieveItemByName(userInput);
+				
+				itemNames.addElement(temp);
+
+				itemList.addMouseListener(mouseListenerItem);
+
+			} else if (e.getSource() == searchButton && searchToolIDButton.isSelected()) {
+		
+				itemNames.clear();
+				Item temp = view.retrieveItemById(userInput);
+				
+				itemNames.addElement(temp);
+				itemList.addMouseListener(mouseListenerItem);
+			} 
+			
+			else if (e.getSource() == listAllButton) {
+				itemNames.clear();
+				
+				LinkedList<Item> allitems = view.retrieveItems();
+				
+				for (Item temp : allitems) {
+					itemNames.addElement(temp);
+				}
+				
+				itemList.addMouseListener(mouseListenerItem);
+			
+			
+			} else if (e.getSource() == decreaseQuantityButton) {
+				
+				item = itemList.getSelectedValue();
+				view.decreaseItemQuantity(item.getDescription());
+				
+				itemNames.clear();
+				itemList.clearSelection();
+				update();
+				
+			
+		} 
 		}	
 		
 	}
@@ -157,44 +245,75 @@ public class ClientView {
 		}
 		
 	}			
-			  
-	MouseListener mouseListener = new MouseAdapter()
-	/**
-	 * Fills information fields in the GUI with the selected items details.
-	 */{
-    public void mouseClicked(MouseEvent e) {
-        if (e.getClickCount() == 1) {
-
-
-            customer = (Customer) custList.getSelectedValue();
-          
-            clientIDField.setText(Integer.toString(customer.getId()));
-			firstNameField.setText(customer.getfName());
-			lastNameField.setText(customer.getlName());
-			addressField.setText(customer.getAddress());
-			postalCodeField.setText(customer.getPostalCode());
-			phoneNumberField.setText(customer.getPhoneNumber());
-			
-			String s = customer.getCustomerType();
-			if (s.equalsIgnoreCase("R")) {
-				clientTypeBox.setSelectedIndex(1);
-			} else if ( s.equalsIgnoreCase("C")) {
-				clientTypeBox.setSelectedIndex(2);
-			}
-
-         	}
-    	}
-	};
 	
-	/**
-	 * Constructs/displays the GUI.
-	 */
-	public void run() {
+	 /**
+	  * Updates the info fields of the GUI with the current item selection.
+	  */
+	private void update() {
+		
+         
+         itemIDField.setText(Integer.toString(item.getId()));
+         itemNameField.setText(item.getDescription());
+         quantityField.setText(Integer.toString(item.getQty()));
+         priceField.setText(Double.toString(item.getPrice()));
+         itemTypeField.setText(item.getItemType());
+         supplierIDField.setText(Integer.toString(item.getSupplierId()));
+	}
+	
+	MouseListener mouseListenerItem = new MouseAdapter()
+			/**
+			 * Fills information fields in the GUI with the selected items details.
+			 */
+			 {
+		    public void mouseClicked(MouseEvent e) {
+		        if (e.getClickCount() == 1) {
 
-		
-		
-		JFrame cvframe = new JFrame("Client Management Screen");
-		cvframe.setLayout(new GridLayout());
+
+		            item = (Item) itemList.getSelectedValue();
+		          
+		            itemIDField.setText(Integer.toString(item.getId()));
+		            itemNameField.setText(item.getDescription());
+		            quantityField.setText(Integer.toString(item.getQty()));
+		            priceField.setText(Double.toString(item.getPrice()));
+		            itemTypeField.setText(item.getItemType());
+		            supplierIDField.setText(Integer.toString(item.getSupplierId()));
+
+
+		         }
+		    	}
+			 };
+			 
+	
+			 
+	 MouseListener mouseListenerCustomer = new MouseAdapter()
+				/**
+				 * Fills information fields in the GUI with the selected items details.
+				 */{
+			    public void mouseClicked(MouseEvent e) {
+			        if (e.getClickCount() == 1) {
+
+
+			            customer = (Customer) custList.getSelectedValue();
+			          
+			            clientIDField.setText(Integer.toString(customer.getId()));
+						firstNameField.setText(customer.getfName());
+						lastNameField.setText(customer.getlName());
+						addressField.setText(customer.getAddress());
+						postalCodeField.setText(customer.getPostalCode());
+						phoneNumberField.setText(customer.getPhoneNumber());
+						
+						String s = customer.getCustomerType();
+						if (s.equalsIgnoreCase("R")) {
+							clientTypeBox.setSelectedIndex(1);
+						} else if ( s.equalsIgnoreCase("C")) {
+							clientTypeBox.setSelectedIndex(2);
+						}
+
+			         	}
+			    	}
+				};
+			 
+	public void run() {
 		JPanel cvpanel = new JPanel();
 		cvpanel.setLayout(new BoxLayout(cvpanel, BoxLayout.X_AXIS));
 		
@@ -419,21 +538,5 @@ public class ClientView {
 		searchButtonClient.addActionListener(listener);
 		clearSearchButton.addActionListener(listener);
 		addButton.addActionListener(listener);
-		
-		cvframe.add(cvpanel, BorderLayout.CENTER);
-		cvframe.pack();
-		cvframe.setSize(1200, 800);
-		
-		cvframe.setVisible(true);
-		
-	}
-	/**
-	 * Constructs a ClientView object and calls run() to build/display the GUI.
-	 * 
-	 */
-	public static void main(String [] args ) {
-		ClientView cview = new ClientView();
-		cview.run();
-	
 	}
 }

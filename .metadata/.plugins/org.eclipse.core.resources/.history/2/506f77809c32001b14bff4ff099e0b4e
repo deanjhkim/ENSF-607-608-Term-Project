@@ -172,6 +172,7 @@ public class ShopView {
           quantityField.setText(Integer.toString(item.getQty()));
           priceField.setText(Double.toString(item.getPrice()));
           itemTypeField.setText(item.getItemType());
+//          powerTypeField.setText(item.getPhoneNumber());
           supplierIDField.setText(Integer.toString(item.getSupplierId()));
 	}
 	

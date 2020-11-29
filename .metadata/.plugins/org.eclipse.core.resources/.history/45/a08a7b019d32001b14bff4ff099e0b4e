@@ -1,0 +1,14 @@
+package client.view;
+
+import javax.swing.JFrame;
+
+public class WelcomeGUI {
+	
+	private JFrame frame;
+	
+	public WelcomeGUI () {
+		
+		this.frame = new JFrame;
+	}
+	
+}

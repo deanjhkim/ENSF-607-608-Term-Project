@@ -74,6 +74,7 @@ public class ShopView {
 	 * Constructor method makes connection to the server.
 	 */
 	public ShopView() {
+//		client = new ClientController("localhost", 9898);
 		view = new ViewController();
 		listener = new MyListener();
 	}
@@ -172,6 +173,7 @@ public class ShopView {
           quantityField.setText(Integer.toString(item.getQty()));
           priceField.setText(Double.toString(item.getPrice()));
           itemTypeField.setText(item.getItemType());
+//          powerTypeField.setText(item.getPhoneNumber());
           supplierIDField.setText(Integer.toString(item.getSupplierId()));
 	}
 	
