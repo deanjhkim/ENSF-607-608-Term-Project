@@ -139,7 +139,6 @@ public class ClientView {
 				customerNames.clear();
 			} else if (e.getSource() == addButton ) {
 				customer = new Customer(Integer.parseInt(clientIDField.getText()), phoneNumberField.getText(), firstNameField.getText(), lastNameField.getText(), addressField.getText(), postalCodeField.getText(), getClientTypeChar());
-				view.addCustomer(customer);
 			}
 		}	
 		
@@ -403,7 +402,7 @@ public class ClientView {
 	    clientSearchPanel.add(Box.createRigidArea(new Dimension(15,0)));
 	    clearButton = new JButton("Clear"); 
 	    clientSearchPanel.add(clearButton);
-	    clientSearchPanel.add(Box.createRigidArea(new Dimension(15,0)));
+	    clientSearchPanel.add(Box.createRigidArea(new Dimension(30,0)));
 	    addButton = new JButton("Add"); 
 	    clientSearchPanel.add(addButton);
 	    clientSearchPanel.add(Box.createRigidArea(new Dimension(30,0)));

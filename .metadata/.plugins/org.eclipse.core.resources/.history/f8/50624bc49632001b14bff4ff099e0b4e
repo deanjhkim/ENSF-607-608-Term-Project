@@ -63,7 +63,6 @@ public class ClientView {
     JButton clearButton;
 	JButton searchButton;
 	JButton clearSearchButton;
-	JButton addButton;
 	JScrollPane scroll;
 	JTextField searchBar;
 	JTextField clientIDField;
@@ -137,9 +136,6 @@ public class ClientView {
 				
 			} else if (e.getSource() == clearSearchButton) {
 				customerNames.clear();
-			} else if (e.getSource() == addButton ) {
-				customer = new Customer(Integer.parseInt(clientIDField.getText()), phoneNumberField.getText(), firstNameField.getText(), lastNameField.getText(), addressField.getText(), postalCodeField.getText(), getClientTypeChar());
-				view.addCustomer(customer);
 			}
 		}	
 		
@@ -403,9 +399,6 @@ public class ClientView {
 	    clientSearchPanel.add(Box.createRigidArea(new Dimension(15,0)));
 	    clearButton = new JButton("Clear"); 
 	    clientSearchPanel.add(clearButton);
-	    clientSearchPanel.add(Box.createRigidArea(new Dimension(15,0)));
-	    addButton = new JButton("Add"); 
-	    clientSearchPanel.add(addButton);
 	    clientSearchPanel.add(Box.createRigidArea(new Dimension(30,0)));
 	    
 	    rightPanel.add(clientSearchPanel);
@@ -421,7 +414,6 @@ public class ClientView {
 	    clearButton.addActionListener(listener);
 		searchButton.addActionListener(listener);
 		clearSearchButton.addActionListener(listener);
-		addButton.addActionListener(listener);
 		
 		cvframe.add(cvpanel, BorderLayout.CENTER);
 		cvframe.pack();

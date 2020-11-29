@@ -403,7 +403,7 @@ public class ClientView {
 	    clientSearchPanel.add(Box.createRigidArea(new Dimension(15,0)));
 	    clearButton = new JButton("Clear"); 
 	    clientSearchPanel.add(clearButton);
-	    clientSearchPanel.add(Box.createRigidArea(new Dimension(15,0)));
+	    clientSearchPanel.add(Box.createRigidArea(new Dimension(30,0)));
 	    addButton = new JButton("Add"); 
 	    clientSearchPanel.add(addButton);
 	    clientSearchPanel.add(Box.createRigidArea(new Dimension(30,0)));
