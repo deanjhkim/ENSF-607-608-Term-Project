@@ -13,6 +13,11 @@ import java.util.concurrent.Executors;
 import server.model.*;
 import sharedModel.*;
 
+/**
+ * Runs server sockets and manages threads for tool shop.
+ * 
+ * @author Evan Boerchers and Dean Kim.
+ */
 public class ServerController {
 	
 	private ObjectOutputStream objectOut;
@@ -43,6 +48,9 @@ public class ServerController {
 	}
 	
 	
+	/** 
+	 * Runs sever function
+	 */
 	public void runServer() {
 		System.out.println("Server Running!");
 		try {
@@ -80,7 +88,9 @@ public class ServerController {
 		// Setting object aggregation
 		serv.setShop(shop);
 		serv.setDBC(dbc);
-		shop.getInventory().setOrder(dbc.getTodaysOrder(shop.getInventory()));
+		Order order = dbc.getTodaysOrder(shop.getInventory());
+		if (order != null)
+			shop.getInventory().setOrder(order);
 		
 		serv.runServer();
 	

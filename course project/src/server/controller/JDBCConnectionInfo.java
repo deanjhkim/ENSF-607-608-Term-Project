@@ -1,5 +1,10 @@
 package server.controller;
 
+/**
+ * Connection info for mySQL connection
+ * @author Evan Boerchers and Dean Kim
+ *
+ */
 public interface JDBCConnectionInfo {
 	
 	static final String CONNECTIONINFO = "jdbc:mysql://localhost:3306/shopdb?useSSL=false";

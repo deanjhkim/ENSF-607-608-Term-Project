@@ -1,13 +1,17 @@
 package server.model;
 
-/**
- * Contains list of all suppliers.
- */
+
 import java.util.LinkedList;
 import java.util.ListIterator;
 
 import sharedModel.Supplier;
 
+
+/**
+ * Contains list of all suppliers and methods for managing.
+ * @author Evan Boerchers and Dean Kim
+ *
+ */
 public class Suppliers {
 
 	private LinkedList<Supplier> suppliers;

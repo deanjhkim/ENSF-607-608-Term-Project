@@ -20,6 +20,9 @@ public class DBController implements JDBCConnectionInfo {
 	private Connection jdbc_connection;
 	private Statement statement;
 
+	/** 
+	 * Creates controller and connects to sql db.
+	 */
 	public DBController() {
 		try {
 			jdbc_connection = DriverManager.getConnection(CONNECTIONINFO, LOGIN, PASSWORD);
@@ -31,6 +34,10 @@ public class DBController implements JDBCConnectionInfo {
 		}
 	}
 
+	/**
+	 * Gets items from item table
+	 * @return
+	 */
 	public LinkedList<Item> getItems() {
 		LinkedList<Item> items = new LinkedList<Item>();
 		String sql = "SELECT * FROM " + ITEMTABLE;
@@ -57,6 +64,10 @@ public class DBController implements JDBCConnectionInfo {
 		return items;
 	}
 
+	/**
+	 * gets suppliers from supplier table
+	 * @return
+	 */
 	public LinkedList<Supplier> getSuppliers() {
 		LinkedList<Supplier> suppliers = new LinkedList<Supplier>();
 		String sql = "SELECT * FROM " + SUPPLIERTABLE;
@@ -84,6 +95,10 @@ public class DBController implements JDBCConnectionInfo {
 		return suppliers;
 	}
 
+	/**
+	 * gets customers from customer table
+	 * @return
+	 */
 	public LinkedList<Customer> getCustomers() {
 		LinkedList<Customer> suppliers = new LinkedList<Customer>();
 		String sql = "SELECT * FROM " + CUSTOMERTABLE;
@@ -111,6 +126,11 @@ public class DBController implements JDBCConnectionInfo {
 		return suppliers;
 	}
 
+	/**
+	 * Gets todays order and orderlines.
+	 * @param inventory
+	 * @return
+	 */
 	public Order getTodaysOrder(Inventory inventory) {
 		String sql = "SELECT * FROM " + ORDERTABLE + " WHERE Order_date=?";
 		java.util.Date dt = new java.util.Date();
@@ -121,9 +141,10 @@ public class DBController implements JDBCConnectionInfo {
 			PreparedStatement ps = jdbc_connection.prepareStatement(sql);
 			ps.setDate(1, Date.valueOf((sdf.format(dt))));
 			results = ps.executeQuery();
-			results.next();
-			order = new Order(results.getInt("Order_id"), results.getDate("Order_date").toString());
-			order.setOrderLines(getOrderLines(order.getId(), inventory));
+			if (results.next()) {
+				order = new Order(results.getInt("Order_id"), results.getDate("Order_date").toString());
+				order.setOrderLines(getOrderLines(order.getId(), inventory));
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -131,6 +152,12 @@ public class DBController implements JDBCConnectionInfo {
 		return order;
 	}
 
+	/**
+	 * gets orderlines for given order.
+	 * @param orderId
+	 * @param inventory
+	 * @return
+	 */
 	public LinkedList<OrderLine> getOrderLines(int orderId, Inventory inventory) {
 		String sql = "SELECT * FROM " + ORDERLINETABLE + " WHERE Order_id=?";
 		LinkedList<OrderLine> orderLines = new LinkedList<OrderLine>();
@@ -150,6 +177,10 @@ public class DBController implements JDBCConnectionInfo {
 		return orderLines;
 	}
 
+	/**
+	 * Decreases item qty in db.
+	 * @param name
+	 */
 	public void decreaseItem(String name) {
 		String sql = "UPDATE " + ITEMTABLE + " SET Quantity = Quantity - 1 WHERE Item_name = ?";
 		try {
@@ -161,6 +192,10 @@ public class DBController implements JDBCConnectionInfo {
 		}
 	}
 
+	/**
+	 * adds customer to db.
+	 * @param customer
+	 */
 	public void addCustomer(Customer customer) {
 		String sql = "INSERT INTO " + CUSTOMERTABLE
 				+ " (Customer_id, Phone_no, FirstName, LastName, Address, Postal_code, Customer_type) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -179,6 +214,10 @@ public class DBController implements JDBCConnectionInfo {
 		}
 	}
 
+	/**
+	 * removes customer by id from db.
+	 * @param id
+	 */
 	public void removeCustomer(int id) {
 		String sql = "DELETE FROM " + CUSTOMERTABLE + " WHERE Customer_id = ?";
 		try {
@@ -190,6 +229,10 @@ public class DBController implements JDBCConnectionInfo {
 		}
 	}
 
+	/**
+	 * changes customer info in db
+	 * @param customer
+	 */
 	public void modifyCustomer(Customer customer) {
 		String sql = "UPDATE " + CUSTOMERTABLE
 				+ " SET Phone_no=?, FirstName=?, LastName=?, Address=?, Postal_code=?, Customer_type=? WHERE Customer_id =?";
@@ -208,6 +251,11 @@ public class DBController implements JDBCConnectionInfo {
 		}
 	}
 
+	/**
+	 * adds orderline to db.
+	 * @param lastOrderLine
+	 * @param orderId
+	 */
 	public void addOrderLine(OrderLine lastOrderLine, int orderId) {
 		String sql = "INSERT INTO " + ORDERLINETABLE
 				+ " (Order_id, Supplier_id, Item_id, Order_quantity) VALUES (?, ?, ?, ?)";
@@ -224,6 +272,10 @@ public class DBController implements JDBCConnectionInfo {
 
 	}
 
+	/**
+	 * adds order to db.
+	 * @param order
+	 */
 	public void addOrder(Order order) {
 		String sql = "INSERT INTO " + ORDERTABLE + " (Order_id, Order_date) VALUES (?, ?)";
 		try {
@@ -237,8 +289,14 @@ public class DBController implements JDBCConnectionInfo {
 		addOrderLine(order.getLastOrderLine(), order.getId());
 	}
 
+	/**
+	 * updates order in db.
+	 * @param findOrderLine
+	 * @param orderId
+	 */
 	public void updateOrderLine(OrderLine findOrderLine, int orderId) {
-		String sql = "UPDATE " + ORDERLINETABLE + " SET Order_quantity=? WHERE Order_id=? AND Item_id=? AND Supplier_id=? ";
+		String sql = "UPDATE " + ORDERLINETABLE
+				+ " SET Order_quantity=? WHERE Order_id=? AND Item_id=? AND Supplier_id=? ";
 		try {
 			PreparedStatement ps = jdbc_connection.prepareStatement(sql);
 			ps.setInt(1, findOrderLine.getQty());

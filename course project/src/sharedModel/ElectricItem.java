@@ -2,11 +2,15 @@ package sharedModel;
 
 import java.io.Serializable;
 
+/** 
+ * Contains data fields for electrical items
+ * 
+ * @author Evan Boerchers and Dean Kim
+ *
+ */
+
 public class ElectricItem extends Item implements Serializable{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private String powerType;
 
@@ -16,6 +20,7 @@ public class ElectricItem extends Item implements Serializable{
 	}
 
 	/**
+	 * String representation
 	 * @Override
 	 */
 	public String toString() {

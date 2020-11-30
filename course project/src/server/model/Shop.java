@@ -4,6 +4,12 @@ import java.util.LinkedList;
 
 import sharedModel.*;
 
+/**
+ * Main model object for storing all relevant objects
+ * @author Evan Boerchers and Dean Kim
+ *
+ */
+
 public class Shop {
 	
 	private Inventory inventory;

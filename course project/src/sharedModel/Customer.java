@@ -1,12 +1,15 @@
 package sharedModel;
 
 import java.io.Serializable;
+/**
+ * 
+ * @author Evan Boerchers and Dean Kim
+ *
+ */
 
 public class Customer implements Serializable {
 
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
 	private int id;
@@ -17,6 +20,16 @@ public class Customer implements Serializable {
 	private String postalCode;
 	private String customerType;
 
+	/**
+	 * Constructs customer object 
+	 * @param id
+	 * @param phoneNumber
+	 * @param fName
+	 * @param lName
+	 * @param address
+	 * @param postalCode
+	 * @param customerType
+	 */
 	public Customer(int id, String phoneNumber, String fName, String lName, String address, String postalCode,
 			String customerType) {
 		this.id = id;
@@ -27,7 +40,16 @@ public class Customer implements Serializable {
 		this.postalCode = postalCode;
 		this.customerType = customerType;
 	}
-
+	
+	/** Sets customer fields
+	 * 
+	 * @param phoneNumber
+	 * @param fName
+	 * @param lName
+	 * @param address
+	 * @param postalCode
+	 * @param customerType
+	 */
 	public void setFields(String phoneNumber, String fName, String lName, String address, String postalCode,
 			String customerType) {
 		this.phoneNumber = phoneNumber;
@@ -38,6 +60,9 @@ public class Customer implements Serializable {
 		this.customerType = customerType;
 	}
 
+	/**
+	 * String representation of object
+	 */
 	public String toString() {
 //		String s = "Customer ID: %d \nFirst Name: %s \nLast Name: %s \n"
 //				+ "Phone Number: %s \nAddress: %s \nPostal Code: %s\nCustomer Type: %s\n";

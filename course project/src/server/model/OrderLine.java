@@ -4,7 +4,7 @@ import sharedModel.Item;
 
 /**
  * Contains data fields and methods for tracking the order of a specific item.
- * @author Evan Boerchers
+ * @author Evan Boerchers and Dean Kim
  *
  */
 public class OrderLine {

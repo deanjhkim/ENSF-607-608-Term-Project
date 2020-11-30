@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * Contains the data fields and methods for tracking a shop supplier.
- * @author Evan Boerchers
+ * @author Evan Boerchers and Dean Kim
  *
  */
 public class Supplier implements Serializable{

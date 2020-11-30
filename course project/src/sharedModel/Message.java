@@ -2,17 +2,17 @@ package sharedModel;
 
 import java.io.Serializable;
 
+/**
+ * Used for messaging between object sockets
+ * @author Evan Boerchers and Dean Kim.
+ *
+ */
+
 public class Message implements Serializable{
 	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * 0 - Display Message
-	 * 
-	 */
 	private int clientCode;
 	
 	private int serverCode;

@@ -11,7 +11,7 @@ import sharedModel.OrderText;
 
 /** 
  * Contains data fields and methods needed for tracking and creating OrderLines of items.
- * @author Evan Boerchers
+ * @author Evan Boerchers and Dean Kim
  *
  */
 public class Order {

@@ -6,19 +6,15 @@ import java.io.Serializable;
  * Contains data fields an methods for tracking item in inventory of shop and
  * its supplier.
  * 
- * @author Evan Boerchers
+ * @author Evan Boerchers and Dean Kim
  *
  */
 public class Item implements Serializable{
 
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
 	private int id;
-
-	
 
 	private String description;
 

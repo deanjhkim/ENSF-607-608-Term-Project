@@ -8,6 +8,12 @@ import java.util.LinkedList;
 import server.model.*;
 import sharedModel.*;
 
+/**
+ * Manages model and db changes. Runs on a single server thread.
+ * @author Evan Boerchers and Dean Kim
+ *
+ */
+
 public class ModelController implements Runnable {
 
 	private ObjectInputStream objectIn;
@@ -16,6 +22,13 @@ public class ModelController implements Runnable {
 	private Shop shop;
 	private DBController dbc;
 
+	/**
+	 * Creates model controller with streams.
+	 * @param in
+	 * @param out
+	 * @param dbc
+	 * @param shop
+	 */
 	public ModelController(ObjectInputStream in, ObjectOutputStream out, DBController dbc, Shop shop) {
 		this.objectIn = in;
 		this.objectOut = out;
@@ -27,6 +40,10 @@ public class ModelController implements Runnable {
 		this.shop = shop;
 	}
 
+	/**
+	 * Sends list of all items
+	 * @param list
+	 */
 	public void sendItemList(LinkedList<Item> list) {
 		try {
 			for (Item obj : list) {
@@ -42,6 +59,10 @@ public class ModelController implements Runnable {
 		}
 	}
 
+	/**
+	 * Sends list of all suppliers.
+	 * @param list
+	 */
 	public void sendSupplierList(LinkedList<Supplier> list) {
 		try {
 			for (Supplier obj : list) {
@@ -57,6 +78,10 @@ public class ModelController implements Runnable {
 		}
 	}
 	
+	/**
+	 * decrease item qty by name
+	 * @param name
+	 */
 	public synchronized void decreaseItem(String name) {
 		int code = shop.getInventory().decreaseItem(name);
 		dbc.decreaseItem(name);
@@ -82,6 +107,10 @@ public class ModelController implements Runnable {
 		}
 	}
 
+	/**
+	 * Sends the customer list
+	 * @param list
+	 */
 	public void sendCustomerList(LinkedList<Customer> list) {
 		try {
 			for (Customer obj : list) {
@@ -97,22 +126,39 @@ public class ModelController implements Runnable {
 		}
 	}
 	
+	/**
+	 * removes customer from model and db based on id
+	 * @param id
+	 */
 	public void removeCustomer(int id) {
 		shop.getCustomers().removeCustomer(id);
 		dbc.removeCustomer(id);
 	}
 	
+	
+	/**
+	 * Adds customer to model and db.
+	 * @param customer
+	 */
 	public void addCustomer(Customer customer) {
 		shop.getCustomers().addCustomer(customer);
 		dbc.addCustomer(customer);
 	}
 
+	/**
+	 * Modifies customer information in model and db.
+	 * @param customer
+	 */
 	public synchronized void modifyCustomer(Customer customer) {
 		shop.getCustomers().modifyCustomer(customer.getId(), customer.getPhoneNumber(), customer.getfName(),
 				customer.getlName(), customer.getAddress(), customer.getPostalCode(), customer.getCustomerType());
 		dbc.modifyCustomer(customer);
 	}
 
+	/** 
+	 * Runs the model 
+	 * 
+	 */
 	@Override
 	public void run() {
 		System.out.println("Model running");
@@ -198,8 +244,6 @@ public class ModelController implements Runnable {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 		}
 	}
-
 }

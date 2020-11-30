@@ -9,7 +9,7 @@ import sharedModel.Item;
  * Contains data fields and methods for tracking and modifying items in shop
  * inventory.
  * 
- * @author Evan Boerchers
+ * @author Evan Boerchers and Dean Kim
  *
  */
 public class Inventory {
