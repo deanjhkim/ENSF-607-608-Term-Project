@@ -10,7 +10,7 @@ import sharedModel.*;
 
 /**
  * Has methods for functionality of GUI, communicates to backend using ClientController object.
- * @authors Evan Boerchers, Dean Kim 
+ * @author deanj
  *
  */
 public class ViewController {

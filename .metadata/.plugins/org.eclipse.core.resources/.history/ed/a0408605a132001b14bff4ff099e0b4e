@@ -251,9 +251,9 @@ public class TabGUI {
 		
 	}			
 	
-	/**
-	* Updates the info fields of the GUI with the current item selection.
-	*/
+	 /**
+	  * Updates the info fields of the GUI with the current item selection.
+	  */
 	private void update() {
 		
          
@@ -289,9 +289,9 @@ public class TabGUI {
 	 };
 			 
 	
-	/**
-	* Fills information fields in the GUI with the selected customer details.
-	*/
+	 /**
+	 * Fills information fields in the GUI with the selected customer details.
+	 */
 	 
 	MouseListener mouseListenerCustomer = new MouseAdapter() {
     public void mouseClicked(MouseEvent e) {
@@ -787,14 +787,17 @@ public class TabGUI {
 	    tabPane.add("Shop View", svpanel);
 	    tabPane.add("Client View", cvpanel);
 	    
+	    
 	    frame.add(tabPane);
 	    frame.setSize(1200,800);
 	    frame.setVisible(true);
 	    
+	   
+	    
 	}
 	
 	/**
-	 * Construct a TabGUI object and displays it.
+	 * Construct a TabGUI object and display it.
 	 * @param args
 	 */
 	public static void main (String [] args) {

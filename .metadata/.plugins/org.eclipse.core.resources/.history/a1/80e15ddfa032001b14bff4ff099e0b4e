@@ -19,7 +19,7 @@ import sharedModel.Customer;
 
 /**
  * 
- * @authors Evan Boerchers, Dean Kim 
+ * @author deanj
  * GUI view for customer database. Has functionality to search for and edit info of customers.
  */
 public class ClientView {

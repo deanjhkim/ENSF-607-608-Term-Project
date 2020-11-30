@@ -1,6 +1,5 @@
 package client.view;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -32,7 +31,7 @@ import sharedModel.Item;
 
 /**
  * Tabbed GUI with welcome screen that has both Client and Shop views.
- * @authors Evan Boerchers, Dean Kim 
+ * @author deanj
  *
  */
 public class TabGUI {
@@ -116,7 +115,7 @@ public class TabGUI {
 	JTextField powerTypeField;
 	JTextField supplierIDField;
 	JTextField decreaseQuantityField;
-	JPanel cvpanel, svpanel, wpanel;
+	
 
 	
 	
@@ -251,9 +250,9 @@ public class TabGUI {
 		
 	}			
 	
-	/**
-	* Updates the info fields of the GUI with the current item selection.
-	*/
+	 /**
+	  * Updates the info fields of the GUI with the current item selection.
+	  */
 	private void update() {
 		
          
@@ -265,67 +264,64 @@ public class TabGUI {
          supplierIDField.setText(Integer.toString(item.getSupplierId()));
 	}
 	
-	/**
-	 * Fills information fields in the GUI with the selected items details.
-	 */
-	
-	MouseListener mouseListenerItem = new MouseAdapter() {
-    public void mouseClicked(MouseEvent e) {
-        if (e.getClickCount() == 1) {
+	MouseListener mouseListenerItem = new MouseAdapter()
+		/**
+		 * Fills information fields in the GUI with the selected items details.
+		 */
+		 {
+	    public void mouseClicked(MouseEvent e) {
+	        if (e.getClickCount() == 1) {
 
 
-            item = (Item) itemList.getSelectedValue();
-          
-            itemIDField.setText(Integer.toString(item.getId()));
-            itemNameField.setText(item.getDescription());
-            quantityField.setText(Integer.toString(item.getQty()));
-            priceField.setText(Double.toString(item.getPrice()));
-            itemTypeField.setText(item.getItemType());
-            supplierIDField.setText(Integer.toString(item.getSupplierId()));
+	            item = (Item) itemList.getSelectedValue();
+	          
+	            itemIDField.setText(Integer.toString(item.getId()));
+	            itemNameField.setText(item.getDescription());
+	            quantityField.setText(Integer.toString(item.getQty()));
+	            priceField.setText(Double.toString(item.getPrice()));
+	            itemTypeField.setText(item.getItemType());
+	            supplierIDField.setText(Integer.toString(item.getSupplierId()));
 
 
-         }
-    	}
-	 };
+	         }
+	    	}
+		 };
 			 
 	
-	/**
-	* Fills information fields in the GUI with the selected customer details.
-	*/
-	 
-	MouseListener mouseListenerCustomer = new MouseAdapter() {
-    public void mouseClicked(MouseEvent e) {
-        if (e.getClickCount() == 1) {
+			 
+	 MouseListener mouseListenerCustomer = new MouseAdapter()
+			/**
+			 * Fills information fields in the GUI with the selected items details.
+			 */{
+		    public void mouseClicked(MouseEvent e) {
+		        if (e.getClickCount() == 1) {
 
 
-            customer = (Customer) custList.getSelectedValue();
-          
-            clientIDField.setText(Integer.toString(customer.getId()));
-			firstNameField.setText(customer.getfName());
-			lastNameField.setText(customer.getlName());
-			addressField.setText(customer.getAddress());
-			postalCodeField.setText(customer.getPostalCode());
-			phoneNumberField.setText(customer.getPhoneNumber());
-			
-			String s = customer.getCustomerType();
-			if (s.equalsIgnoreCase("R")) {
-				clientTypeBox.setSelectedIndex(1);
-			} else if ( s.equalsIgnoreCase("C")) {
-				clientTypeBox.setSelectedIndex(2);
-			}
+		            customer = (Customer) custList.getSelectedValue();
+		          
+		            clientIDField.setText(Integer.toString(customer.getId()));
+					firstNameField.setText(customer.getfName());
+					lastNameField.setText(customer.getlName());
+					addressField.setText(customer.getAddress());
+					postalCodeField.setText(customer.getPostalCode());
+					phoneNumberField.setText(customer.getPhoneNumber());
+					
+					String s = customer.getCustomerType();
+					if (s.equalsIgnoreCase("R")) {
+						clientTypeBox.setSelectedIndex(1);
+					} else if ( s.equalsIgnoreCase("C")) {
+						clientTypeBox.setSelectedIndex(2);
+					}
 
-         	}
-    	}
-	};
-
-	/**
-	 *  Creates the Client View panel.
-	 */
-	public void cvPanel( ) {
-		cvpanel = new JPanel();
+		         	}
+		    	}
+			};
+			 
+	public void run() {
+		JPanel cvpanel = new JPanel();
 		cvpanel.setLayout(new BoxLayout(cvpanel, BoxLayout.X_AXIS));
 		
-
+		listener = new MyListener();
 		
 		JPanel leftPanel = new JPanel();
 		leftPanel.setAlignmentY(0f);
@@ -546,13 +542,10 @@ public class TabGUI {
 		searchButtonClient.addActionListener(listener);
 		clearSearchButton.addActionListener(listener);
 		addButton.addActionListener(listener);
-	}
-	 
-	/**
-	 * Creates the Shop View panel
-	 */
-	public void svPanel () {
-		svpanel = new JPanel();
+		
+		//
+		
+		JPanel svpanel = new JPanel();
 		svpanel.setLayout(new BoxLayout(svpanel, BoxLayout.X_AXIS));
 		
 		JPanel topPanel = new JPanel();
@@ -639,7 +632,7 @@ public class TabGUI {
 	    bottomPanel.setPreferredSize(new Dimension(300,2000));
 	    bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.Y_AXIS));	  
 		JLabel botTitle = new JLabel("Search Results");
-		botTitle.setFont(new Font("Verdana",1,15));
+	    rightTitle.setFont(new Font("Verdana",1,15));
 	    bottomPanel.add(botTitle);
 	    bottomPanel.setBorder(new LineBorder(Color.BLACK));
 	    
@@ -749,54 +742,37 @@ public class TabGUI {
 	    
 	    svpanel.add(topPanel);
 	    svpanel.add(bottomPanel);
-		
-	}
-	
-	/**
-	 * Creates the Welcome Panel.
-	 */
-	public void wPanel () {
-		wpanel = new JPanel();
+	    
+	    //
+
+		JPanel wpanel = new JPanel();
 		wpanel.setLayout(new BoxLayout(wpanel, BoxLayout.X_AXIS));
 		wpanel.add(Box.createRigidArea(new Dimension(0,15)));
 		
-		wpanel.setLayout(new BoxLayout(wpanel, BoxLayout.X_AXIS));
-		wpanel.add(Box.createHorizontalGlue());
 		JLabel welcomePrompt = new JLabel("Select the Client or Shop view.");
 		welcomePrompt.setFont(new Font("Verdana",1,20));
 		welcomePrompt.setAlignmentY(java.awt.Component.CENTER_ALIGNMENT);
 		welcomePrompt.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
-		wpanel.add(welcomePrompt, BorderLayout.CENTER);		
-		wpanel.add(Box.createHorizontalGlue());
+		wpanel.add(welcomePrompt);
 		
-	}
-	
-	/**
-	 * Create the panels and add them to the tabbed frame.
-	 */
-	public void run() {
+		//
 	    
 	    JFrame frame = new JFrame ("Tool Shop App");
 	    JTabbedPane tabPane = new JTabbedPane();
-	    
-	    wPanel();
-	    svPanel();
-	    cvPanel();
-	    
 	    tabPane.add("Home", wpanel);
 	    tabPane.add("Shop View", svpanel);
 	    tabPane.add("Client View", cvpanel);
+	    
 	    
 	    frame.add(tabPane);
 	    frame.setSize(1200,800);
 	    frame.setVisible(true);
 	    
+	    //
+	    
+	    
 	}
 	
-	/**
-	 * Construct a TabGUI object and displays it.
-	 * @param args
-	 */
 	public static void main (String [] args) {
 		
 		TabGUI tg = new TabGUI();

@@ -10,7 +10,7 @@ import java.net.UnknownHostException;
 
 /**
  * Connects to backend server side through Java Socket.
- * @authors Evan Boerchers, Dean Kim 
+ * @author deanj
  *
  */
 public class ClientController {

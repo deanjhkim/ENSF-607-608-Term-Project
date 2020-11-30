@@ -787,14 +787,17 @@ public class TabGUI {
 	    tabPane.add("Shop View", svpanel);
 	    tabPane.add("Client View", cvpanel);
 	    
+	    
 	    frame.add(tabPane);
 	    frame.setSize(1200,800);
 	    frame.setVisible(true);
 	    
+	   
+	    
 	}
 	
 	/**
-	 * Construct a TabGUI object and displays it.
+	 * Construct a TabGUI object and display it.
 	 * @param args
 	 */
 	public static void main (String [] args) {

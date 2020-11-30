@@ -14,7 +14,7 @@ import client.controller.*;
 import sharedModel.*;
 /**
  * 
- * @authors Evan Boerchers, Dean Kim 
+ * @author deanj
  * GUI view for tool shop database. Has functionality to search for, list, and decrease quantity of tools.
  */
 public class ShopView {
