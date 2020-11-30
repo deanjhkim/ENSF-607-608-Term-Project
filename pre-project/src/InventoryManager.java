@@ -11,22 +11,35 @@ import java.util.Scanner;
 
 // Pre-Project Exercise 
 
-// This program allows you to create and manage a store inventory database.
-// It creates a database and datatable, then populates that table with tools from
-// items.txt.
+
+/**
+ * 
+ * @authors Evan Boerchers, Dean Kim
+ * This program allows you to create and manage a store inventory database.
+ * It creates a database and datatable, then populates that table with tools from
+ *  items.txt.
+ */
 public class InventoryManager {
 	
+	/**
+	 * JDBC connection from the database.
+	 */
 	public Connection jdbc_connection;
+	/**
+	 * Prepared statement object for injecting queries to database.
+	 */
 	public PreparedStatement statement;
+	/**
+	 * Parameter information for the database.
+	 */
 	public String databaseName = "Inventorydb", tableName = "ToolTable", dataFile = "items.txt";
-	
-	// Students should configure these variables for their own MySQL environment
-	// If you have not created your first database in mySQL yet, you can leave the 
-	// "[DATABASE NAME]" blank to get a connection and create one with the createDB() method.
 	public String connectionInfo = "jdbc:mysql://localhost:3306/Inventorydb?useSSL=false",  
 				  login          = "student",
 				  password       = "student12345";
-
+	
+	/**
+	 * Constructor method makes connection to the database.
+	 */
 	public InventoryManager()
 	{
 		try{		
@@ -57,7 +70,9 @@ public class InventoryManager {
 		}
 	}
 
-	// Create a data table inside of the database to hold tools
+	/**
+	 * Create a data table inside of the database to hold tools
+	 */
 	public void createTable()
 	{
 		String sql = "CREATE TABLE " + tableName + "(" +
@@ -79,7 +94,9 @@ public class InventoryManager {
 		}
 	}
 
-	// Removes the data table from the database (and all the data held within it!)
+	/**
+	 * Removes the data table from the database (and all the data held within it!)
+	 */
 	public void removeTable()
 	{
 		String sql = "DROP TABLE " + tableName;
@@ -93,8 +110,10 @@ public class InventoryManager {
 			e.printStackTrace();
 		}
 	}
-
-	// Fills the data table with all the tools from the text file 'items.txt' if found
+	
+	/**
+	 * Fills the data table with all the tools from the text file 'items.txt' if found
+	 */
 	public void fillTable()
 	{
 		try{
@@ -120,7 +139,10 @@ public class InventoryManager {
 		}
 	}
 
-	// Add a tool to the database table
+	/**
+	 * Add a tool to the database table
+	 * @param tool the tool to be added
+	 */
 	public void addItem(Item tool)
 	{
 		String sql = "INSERT INTO " + tableName +
@@ -139,8 +161,12 @@ public class InventoryManager {
 		}
 	}
 
-	// This method should search the database table for a tool matching the toolID parameter and return that tool.
-	// It should return null if no tools matching that ID are found.
+	/**
+	 * This method should searches database table for a tool matching the toolID parameter and returns that tool.
+	 * It should return null if no tools matching that ID are found.
+	 * @param toolID the tool to be added
+	 * @return the tool with the given ID
+	 */
 	public Item searchTool(int toolID)
 	{
 		String sql = "SELECT * FROM " + tableName + " WHERE ID=%" + toolID +"%";
@@ -162,7 +188,9 @@ public class InventoryManager {
 		return null;
 	}
 
-	// Prints all the items in the database to console
+	/**
+	 * Prints all the items in the database to console
+	 */
 	public void printTable()
 	{
 		try {
@@ -184,6 +212,10 @@ public class InventoryManager {
 		}
 	}
 	
+	/**
+	 * Main method to declare an InventoryManager object, construct and query the DB.
+	 * 
+	 */
 	public static void main(String args[])
 	{
 		InventoryManager inventory = new InventoryManager();
