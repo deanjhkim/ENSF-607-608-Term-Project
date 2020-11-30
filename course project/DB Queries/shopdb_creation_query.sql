@@ -1,3 +1,7 @@
+# 608 VIDEO DEMO
+# Evan Boerchers
+# Dean Kim
+
 DROP DATABASE IF EXISTS shopdb;
 CREATE DATABASE shopdb;
 USE shopdb;
@@ -32,7 +36,7 @@ DROP TABLE IF EXISTS customer;
 CREATE TABLE customer
 	(
     Customer_id int NOT NULL,
-    Phone_no VARCHAR(12),
+    Phone_no VARCHAR(15),
     FirstName VARCHAR(20),
     LastName VARCHAR(20),
     Address VARCHAR(50), 
@@ -56,9 +60,15 @@ CREATE TABLE orderline
     Supplier_id int NOT NULL,
     Item_id int NOT NULL,
     Order_quantity int NOT NULL,
-    FOREIGN KEY (Order_id) REFERENCES shoporder(Order_id),
-	FOREIGN KEY (Supplier_id) REFERENCES supplier(Supplier_id),
+    FOREIGN KEY (Order_id) REFERENCES shoporder(Order_id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
+	FOREIGN KEY (Supplier_id) REFERENCES supplier(Supplier_id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
     FOREIGN KEY (Item_id) REFERENCES item(Item_id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
     );
     
 DROP TABLE IF EXISTS buys;
@@ -67,7 +77,11 @@ CREATE TABLE buys
     Customer_id int NOT NULL,
     Item_id int NOT NULL,
     Quantity int NOT NULL,
-    FOREIGN KEY (Customer_id) REFERENCES customer(Customer_id),
+    FOREIGN KEY (Customer_id) REFERENCES customer(Customer_id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
     FOREIGN KEY (Item_id) REFERENCES item(Item_id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
     );
 
