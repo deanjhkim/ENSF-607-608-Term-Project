@@ -50,6 +50,10 @@ public class Item implements Serializable{
 	 * @Override
 	 */
 	public String toString() {
+//		String s = "Item ID: %d \nItem Description: %s \nItem Quantity: %d \n"
+//				+ "Item Price: %.2f \nItem SupplierID: %d\nItem Type: %s\n";
+//
+//		return String.format(s, this.id, this.description, this.qty, this.price, this.supplierId, this.itemType);
 		
 		String s = "Item ID: %d \nItem Description: %s \nItem Quantity: %d \n";
 		return String.format(s, this.id, this.description, this.qty);
