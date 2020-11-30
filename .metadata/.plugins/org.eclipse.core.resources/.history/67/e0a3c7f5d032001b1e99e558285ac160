@@ -124,11 +124,11 @@ public class InventoryManager {
 	public void addItem(Item tool)
 	{
 		String sql = "INSERT INTO " + tableName +
-				" VALUES ( %" + tool.getId() + "%, '%" + 
-				tool.getName() + "%', %" + 
-				tool.getQty() + "%, %" + 
-				tool.getPrice() + "%, %" + 
-				tool.getSupplierId() + "%);";
+				" VALUES ( " + tool.getId() + ", '" + 
+				tool.getName() + "', " + 
+				tool.getQty() + ", " + 
+				tool.getPrice() + ", " + 
+				tool.getSupplierId() + ");";
 		try{
 			statement = jdbc_connection.prepareStatement(sql);
 			statement.executeUpdate();
@@ -143,7 +143,7 @@ public class InventoryManager {
 	// It should return null if no tools matching that ID are found.
 	public Item searchTool(int toolID)
 	{
-		String sql = "SELECT * FROM " + tableName + " WHERE ID=%" + toolID +"%";
+		String sql = "SELECT * FROM " + tableName + " WHERE ID=" + toolID;
 		ResultSet tool;
 		try {
 			statement = jdbc_connection.prepareStatement(sql);

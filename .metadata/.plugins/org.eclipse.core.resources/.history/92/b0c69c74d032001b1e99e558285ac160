@@ -17,7 +17,7 @@ import java.util.Scanner;
 public class InventoryManager {
 	
 	public Connection jdbc_connection;
-	public PreparedStatement statement;
+	public Statement statement;
 	public String databaseName = "Inventorydb", tableName = "ToolTable", dataFile = "items.txt";
 	
 	// Students should configure these variables for their own MySQL environment
@@ -43,9 +43,8 @@ public class InventoryManager {
 	public void createDB()
 	{
 		try {
-			String sql = "CREATE DATABASE " + databaseName;
-			statement = jdbc_connection.prepareStatement(sql);
-			statement.executeUpdate();
+			statement = jdbc_connection.createStatement();
+			statement.executeUpdate("CREATE DATABASE " + databaseName);
 			System.out.println("Created Database " + databaseName);
 		} 
 		catch( SQLException e)
@@ -68,9 +67,8 @@ public class InventoryManager {
 				     "SUPPLIERID INT(4) NOT NULL, " + 
 				     "PRIMARY KEY ( id ))";
 		try{
-			
-			statement = jdbc_connection.prepareStatement(sql);
-			statement.executeUpdate();
+			statement = jdbc_connection.createStatement();
+			statement.executeUpdate(sql);
 			System.out.println("Created Table " + tableName);
 		}
 		catch(SQLException e)
@@ -84,8 +82,8 @@ public class InventoryManager {
 	{
 		String sql = "DROP TABLE " + tableName;
 		try{
-			statement = jdbc_connection.prepareStatement(sql);
-			statement.executeUpdate();
+			statement = jdbc_connection.createStatement();
+			statement.executeUpdate(sql);
 			System.out.println("Removed Table " + tableName);
 		}
 		catch(SQLException e)
@@ -124,14 +122,14 @@ public class InventoryManager {
 	public void addItem(Item tool)
 	{
 		String sql = "INSERT INTO " + tableName +
-				" VALUES ( %" + tool.getId() + "%, '%" + 
-				tool.getName() + "%', %" + 
-				tool.getQty() + "%, %" + 
-				tool.getPrice() + "%, %" + 
-				tool.getSupplierId() + "%);";
+				" VALUES ( " + tool.getId() + ", '" + 
+				tool.getName() + "', " + 
+				tool.getQty() + ", " + 
+				tool.getPrice() + ", " + 
+				tool.getSupplierId() + ");";
 		try{
-			statement = jdbc_connection.prepareStatement(sql);
-			statement.executeUpdate();
+			statement = jdbc_connection.createStatement();
+			statement.executeUpdate(sql);
 		}
 		catch(SQLException e)
 		{
@@ -143,11 +141,11 @@ public class InventoryManager {
 	// It should return null if no tools matching that ID are found.
 	public Item searchTool(int toolID)
 	{
-		String sql = "SELECT * FROM " + tableName + " WHERE ID=%" + toolID +"%";
+		String sql = "SELECT * FROM " + tableName + " WHERE ID=" + toolID;
 		ResultSet tool;
 		try {
-			statement = jdbc_connection.prepareStatement(sql);
-			tool = statement.executeQuery();
+			statement = jdbc_connection.createStatement();
+			tool = statement.executeQuery(sql);
 			if(tool.next())
 			{
 				return new Item(tool.getInt("ID"),
@@ -167,8 +165,8 @@ public class InventoryManager {
 	{
 		try {
 			String sql = "SELECT * FROM " + tableName;
-			statement = jdbc_connection.prepareStatement(sql);
-			ResultSet tools = statement.executeQuery();
+			statement = jdbc_connection.createStatement();
+			ResultSet tools = statement.executeQuery(sql);
 			System.out.println("Tools:");
 			while(tools.next())
 			{
